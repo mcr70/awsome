@@ -1,0 +1,13 @@
+<h3>Repositories</h3>
+
+<div class="repositories-container">
+    <mat-table [dataSource]="repositories">
+      <ng-container matColumnDef="repository">
+        <!--<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>-->
+        <mat-cell *matCellDef="let repository">{{ repository }}</mat-cell>
+      </ng-container>
+  
+      <!--<mat-header-row *matHeaderRowDef="['repository']"></mat-header-row>-->
+      <mat-row *matRowDef="let row; columns: ['repository'];"></mat-row>
+    </mat-table>
+</div>

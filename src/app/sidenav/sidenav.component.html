@@ -1,0 +1,31 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened="true" [ngClass]="{'collapsed': isCollapsed}">
+    <!-- When sidenav is not collapsed, display menu -->
+    <ng-container *ngIf="!isCollapsed; else collapsedTemplate">
+      <button mat-icon-button class="collapse-button" (click)="collapseSidenav()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <mat-nav-list>
+        <a mat-list-item routerLink="/codecommit" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">CodeCommit</a>
+        <a mat-list-item routerLink="/cloudwatch" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">CloudWatch</a>
+        <a mat-list-item routerLink="/ecs" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">ECS</a>
+        <a mat-list-item routerLink="/elb" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">ELB</a>
+      </mat-nav-list>
+    </ng-container>
+
+    <!-- collapsedTemplate: when sidenav is in collapsed state -->
+    <ng-template #collapsedTemplate>
+      <div class="collapsed-content">
+        <button mat-icon-button (click)="expandSidenav()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </mat-sidenav>
+
+  <!-- Dynamically adjust margin base on collapsed state -->
+  <mat-sidenav-content [style.marginLeft.px]="isCollapsed ? 48 : 150">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

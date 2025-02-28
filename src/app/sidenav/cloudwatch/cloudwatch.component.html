@@ -1,0 +1,45 @@
+<h3>Log Groups</h3>
+
+<mat-form-field appearance="outline">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter log groups">
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!-- Log Group Name Column -->
+  <ng-container matColumnDef="logGroupName">
+    <th mat-header-cell *matHeaderCellDef> Log Group Name </th>
+    <td mat-cell *matCellDef="let logGroup">
+      <a [routerLink]="['/cloudwatch/', logGroup.logGroupName]">{{ logGroup.logGroupName }}</a>
+    </td>       
+  </ng-container>
+
+  <!-- ARN Column -->
+  <ng-container matColumnDef="arn">
+    <th mat-header-cell *matHeaderCellDef> ARN </th>
+    <td mat-cell *matCellDef="let logGroup"> {{ logGroup.arn }} </td>
+  </ng-container>
+
+  <!-- Creation Time Column -->
+  <ng-container matColumnDef="creationTime">
+    <th mat-header-cell *matHeaderCellDef> Creation Time </th>
+    <td mat-cell *matCellDef="let logGroup"> {{ logGroup.creationTime | date:'medium' }} </td>
+  </ng-container>
+
+  <!-- Retention In Days Column -->
+  <ng-container matColumnDef="retentionInDays">
+      <th mat-header-cell *matHeaderCellDef> Retention In Days </th>
+      <td mat-cell *matCellDef="let logGroup"> {{ logGroup.retentionInDays }} </td>
+  </ng-container>
+
+  <!-- Stored Bytes Column -->
+  <ng-container matColumnDef="storedBytes">
+    <th mat-header-cell *matHeaderCellDef> Stored Bytes </th>
+    <td mat-cell *matCellDef="let logGroup"> {{ logGroup.storedBytes | number }} </td>
+  </ng-container>
+
+  <!-- Header and Row Declarations -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

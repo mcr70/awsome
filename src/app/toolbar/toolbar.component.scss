@@ -1,0 +1,56 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999; 
+  --mat-sys-title-large-size: 1rem;
+  --mat-sys-label-large-size: 1rem;
+  background-color: ghostwhite;
+}
+
+.mat-mdc-menu-item {
+  min-height: 30px; 
+}
+
+.menu-item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+  padding-right: 4px;
+}
+
+mat-menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.menu-item-container button {
+  margin-left: 1rem;
+  padding: 0;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+
+  .mat-mdc-button-touch-target {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mat-focus-indicator {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+mat-icon {
+  vertical-align: middle;
+  font-size: 16px;
+}

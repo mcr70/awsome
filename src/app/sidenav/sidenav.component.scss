@@ -1,0 +1,33 @@
+mat-sidenav-container {
+  height: 100vh;
+  margin-top: 64px; // Same size as toolbar
+}
+
+// full width
+mat-sidenav {
+  width: 150px;
+  transition: width 0.3s ease-in-out;
+}
+
+// Collapsed width
+mat-sidenav.collapsed {
+  width: 48px;
+  transition: width 0.3s ease-in-out;
+}
+
+mat-sidenav-content {
+  flex: 1;
+  padding: 16px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+
+.collapse-button, .collapsed-content button {
+  margin: 0.5rem;
+}
+
+// mat-list-item height
+.mdc-list-item.mdc-list-item--with-one-line {
+  height: var(--mdc-list-list-item-one-line-container-height, 30px);
+  //margin: 0.5rem;
+}

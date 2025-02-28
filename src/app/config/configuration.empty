@@ -1,0 +1,36 @@
+import { PassedInitialConfig } from 'angular-auth-oidc-client';
+
+export const awsomeConfig = {
+  allowSwitchRole: true, // Allow switching roles
+}
+
+
+// AWS Cognito configuration
+export const cognitoConfig = {
+  domain: '',           // Domain of the Cognito User Pool
+  name: '',             // Display name of the AWS account where the Cognito User Pool is located
+  region: '',           // Region of the Cognito User Pool
+  idpIdentifier: '',    // IDP identifier
+
+  userPoolId: '',       // User Pool ID
+  userPoolClientId: '', // Client ID of the App Client in the Cognito User Pool
+  IdentityPoolId: '',   // Identity Pool ID
+}
+
+
+
+// Configuration for OIDC client used to connect to Cognito
+export const authConfig: PassedInitialConfig = {
+  config: {
+    authority: `https://${cognitoConfig.idpIdentifier}`,
+    redirectUrl: window.location.origin,
+    postLogoutRedirectUri: window.location.origin,
+    clientId: cognitoConfig.userPoolClientId,
+    scope: 'openid', // 'openid profile offline_access ' + your scopes
+    responseType: 'code',
+    silentRenew: true,
+    useRefreshToken: true,
+    renewTimeBeforeTokenExpiresInSeconds: 30,
+  }
+}
+

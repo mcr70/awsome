@@ -1,0 +1,62 @@
+.log-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px - 48px); /* Subtract toolbar + header */
+    padding: 1rem;
+    overflow: hidden;
+}
+
+mat-expansion-panel {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+mat-expansion-panel-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    height: auto; 
+    overflow: hidden;
+}
+
+.log-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+}
+
+.log-filter, .log-select {
+    flex: 1; 
+    min-width: 200px; 
+}
+
+mat-expansion-panel-header {
+    min-height: 48px !important;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+}
+
+.log-table-container {
+    flex-grow: 1;
+    min-height: 0;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 8px;
+    height: 100%;
+}
+
+.mat-column-timestamp {
+    white-space: nowrap;  // No line breaks
+}
+
+.mat-column-message {
+    white-space: normal;  // Allow line breaks
+    word-break: break-word; 
+    overflow-wrap: break-word;
+}

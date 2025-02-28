@@ -1,0 +1,25 @@
+<h3>Load Balancers</h3>
+
+<mat-table [dataSource]="loadbalancers" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="loadBalancerName">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let loadBalancer"> {{ loadBalancer.LoadBalancerName }} </mat-cell>
+  </ng-container>
+
+  <!-- DNS Name Column -->
+  <ng-container matColumnDef="dnsName">
+    <mat-header-cell *matHeaderCellDef> DNS Name </mat-header-cell>
+    <mat-cell *matCellDef="let loadBalancer"> {{ loadBalancer.DNSName }} </mat-cell>
+  </ng-container>
+
+
+  <!-- Type Column -->
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let loadBalancer"> {{ loadBalancer.Type }} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="['loadBalancerName', 'dnsName', 'type']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['loadBalancerName', 'dnsName', 'type']"></mat-row>
+</mat-table>

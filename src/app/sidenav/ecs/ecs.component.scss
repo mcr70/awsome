@@ -1,0 +1,12 @@
+
+.details-link {
+    color: #1976d2; //var(--mat-primary); /* Material Designin ensisijainen väri */
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: normal; /* Poistaa boldauksen */
+    margin-left: 1rem;    
+}
+
+// .cluster-details-link.hover {
+//     color: #1976d2; //var(--mat-primary); /* Material Designin ensisijainen väri */
+// }

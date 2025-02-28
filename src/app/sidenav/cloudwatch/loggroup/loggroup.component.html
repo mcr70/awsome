@@ -1,0 +1,51 @@
+<div class="log-container">
+
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title> 
+            <button mat-icon-button [routerLink]="['/cloudwatch']">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            {{ logGroupName }} 
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="log-controls">
+            <button mat-icon-button (click)="togglePause()" [color]="isPaused ? 'warn' : 'primary'">
+                <mat-icon>{{ isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
+            </button>
+
+            <mat-form-field appearance="outline" class="log-filter">
+                <mat-label>Filter logs</mat-label>
+                <input matInput #logFilter [(ngModel)]="searchQuery" (keyup)="applyFilter()" placeholder="Type to filter logs">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="log-select">
+                <mat-label>Log Stream</mat-label>
+                <mat-select [(ngModel)]="logStreamName" (selectionChange)="fetchLogEvents()">
+                    <mat-option *ngFor="let stream of logStreams" [value]="stream">{{ stream }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </mat-expansion-panel>
+
+
+    <!--  Table  -->
+    <div class="log-table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="timestamp">
+                <th mat-header-cell *matHeaderCellDef> Timestamp </th>
+                <td mat-cell *matCellDef="let log" class="mat-column-timestamp"> {{ log.timestamp | date:'short' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="message">
+                <th mat-header-cell *matHeaderCellDef> Message </th>
+                <td mat-cell *matCellDef="let log" class="mat-column-message"> {{ log.message }} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['timestamp', 'message']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['timestamp', 'message'];"></tr>
+        </table>
+    </div>
+
+</div>

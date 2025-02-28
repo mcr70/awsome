@@ -1,0 +1,42 @@
+<h3>Clusters</h3>
+
+<mat-accordion class="example-headers-align" multi="false">
+    <ng-container *ngFor="let cluster of clusters(); trackBy: trackByCluster">
+        <mat-expansion-panel (opened)="expansionPanelState(cluster, true)" (closed)="expansionPanelState(cluster, false)" [expanded]="false">
+            <mat-expansion-panel-header>
+            <mat-panel-title> 
+                {{ cluster }} 
+                <a (click)="openClusterDetails(cluster, $event)" class="details-link">[ info ]</a>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-table [dataSource]="services()[cluster]">
+                <!-- Service Name -->
+                <ng-container matColumnDef="serviceName">
+                  <mat-header-cell *matHeaderCellDef> Service Name </mat-header-cell>
+                  <mat-cell *matCellDef="let svc">
+                    <a (click)="openServiceDetails(cluster, svc.serviceName, $event)" class="details-link">{{ svc.serviceName }}</a>
+                  </mat-cell>
+                </ng-container>
+
+                <!-- Task Definition -->
+                <ng-container matColumnDef="taskDefinition">
+                    <mat-header-cell *matHeaderCellDef> Task Definition </mat-header-cell>
+                    <mat-cell *matCellDef="let svc">
+                        <a (click)="openTaskdefDetails(svc.taskDefinition, $event)" class="details-link">{{ getTaskDefinitionName(svc.taskDefinition) }}</a>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Running / Desired Count -->
+                <ng-container matColumnDef="tasks">
+                    <mat-header-cell *matHeaderCellDef> Tasks </mat-header-cell>
+                    <mat-cell *matCellDef="let svc">{{ svc.runningCount }} / {{ svc.desiredCount }}</mat-cell>
+                </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['serviceName', 'taskDefinition', 'tasks']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['serviceName', 'taskDefinition', 'tasks'];"></mat-row>
+            </mat-table>
+
+        </mat-expansion-panel>
+    </ng-container>
+</mat-accordion>

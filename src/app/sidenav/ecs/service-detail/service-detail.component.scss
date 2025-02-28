@@ -1,0 +1,34 @@
+/* Varmistetaan, että mat-tab-group ei veny enemmän kuin halutaan */
+.fixed-height-tabs {
+    height: 300px; /* Kiinteä korkeus */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .tab-content {
+    flex-grow: 1;
+    overflow: auto;  /* Sisältö voi skrollata, jos on liikaa dataa */
+  }
+  
+  /* Taulut skrollaavat, jos niissä on paljon riviä */
+  .info-table {
+    width: 100%;
+    margin: auto;
+    margin-top: 1rem;
+    border-collapse: collapse;
+  
+    td {
+      padding: 4px 8px;
+      vertical-align: top;
+    }
+  
+    td:first-child {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+  
+    /* Skrollaava taulukko */
+    max-height: 250px; /* Taulukon korkeus rajoitettu */
+    overflow-y: auto;  /* Skrollaa pystysuunnassa */
+  }
+  

@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Service Details</h2>
+
+<mat-dialog-content class="dialog-content">
+  <mat-tab-group class="fixed-height-tabs">
+    
+    <!-- General tab -->
+    <mat-tab label="General">
+      <div class="tab-content">
+        <table mat-table [dataSource]="generalData" class="info-table">
+          <ng-container matColumnDef="property">
+            <th mat-header-cell *matHeaderCellDef> Property </th>
+            <td mat-cell *matCellDef="let entry">{{ entry.key }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef> Value </th>
+            <td mat-cell *matCellDef="let entry">{{ entry.value }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['property', 'value']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['property', 'value'];"></tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <!-- Deployments tab -->
+    <mat-tab label="Deployments">
+      <div class="tab-content">
+        <table mat-table [dataSource]="deploymentsData" class="info-table">
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> Created at </th>
+            <td mat-cell *matCellDef="let entry">{{ entry.createdAt }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rolloutState">
+            <th mat-header-cell *matHeaderCellDef> Rollout state </th>
+            <td mat-cell *matCellDef="let entry">{{ entry.rolloutState }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['createdAt', 'rolloutState']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['createdAt', 'rolloutState'];"></tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <!-- Events tab -->
+    <mat-tab label="Events">
+      <div class="tab-content">
+        <table mat-table [dataSource]="eventsData" class="info-table">
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> Created at </th>
+            <td mat-cell *matCellDef="let entry">{{ entry.createdAt }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef> Message </th>
+            <td mat-cell *matCellDef="let entry">{{ entry.message }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['createdAt', 'message']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['createdAt', 'message'];"></tr>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

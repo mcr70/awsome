@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+
+// https://material.angular.io/guide/theming
+//
+@use '@angular/material' as mat;
+
+:root {
+  @include mat.table-overrides((
+    background-color: ghostWhite,
+  ));
+  @include mat.menu-overrides((
+    container-color: ghostWhite,
+  ));  
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+  background: ghostwhite;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} 
+
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+

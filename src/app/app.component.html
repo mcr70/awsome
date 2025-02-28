@@ -1,0 +1,17 @@
+<!-- Toolbar is visible only after the configuration has been done-->
+<app-toolbar *ngIf="configDone" [oidcService]="oidcSecurityService"></app-toolbar>
+
+<ng-container *ngIf="isAuthenticated; else showHome">
+  <sidenav [isAuthenticated]="isAuthenticated"></sidenav>
+</ng-container>
+
+
+<ng-template #showHome>
+  <app-not-logged-in *ngIf="configDone"></app-not-logged-in> <!-- Don't show, if configuration is not done-->
+</ng-template>
+
+<!-- If the configuration is not done properly, just print some info text-->
+<ng-container *ngIf="!configDone">
+  <p style="padding: 150px;">Please configure the application first</p>
+</ng-container>
+

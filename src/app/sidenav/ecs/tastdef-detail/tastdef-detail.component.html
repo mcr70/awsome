@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Task Definition Details</h2>
+<mat-dialog-content class="dialog-content" autofocus="false">
+  <mat-tab-group class="fixed-height-tabs">
+
+    <mat-tab label="General">
+      <div class="tab-content">
+        <table class="info-table">
+            <tr><td><strong>ARN:</strong></td><td>{{ data.taskdef.taskDefinitionArn }}</td></tr>
+            <tr><td><strong>Family:</strong></td><td>{{ data.taskdef.family }}</td></tr>
+            <tr><td><strong>Revision:</strong></td><td>{{ data.taskdef.revision }}</td></tr>
+            <tr><td><strong>Network Mode:</strong></td><td>{{ data.taskdef.networkMode }}</td></tr>
+            <tr><td><strong>CPU:</strong></td><td>{{ data.taskdef.cpu }}</td></tr>
+            <tr><td><strong>Memory:</strong></td><td>{{ data.taskdef.memory }}</td></tr>
+            <tr><td><strong>Status:</strong></td><td>{{ data.taskdef.status }}</td></tr>
+          </table>          
+      </div>
+    </mat-tab>
+
+    <!-- Container Definitions -->
+    <mat-tab label="Container Definitions">
+      <div class="tab-content">
+        <textarea matInput [value]="data.taskdef.containerDefinitions | json" readonly 
+                  class="json-textarea">
+        </textarea>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

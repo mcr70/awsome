@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Cluster Details</h2>
+<mat-dialog-content>
+  <p><strong>ARN:</strong> {{ data.cluster.clusterArn }}</p>
+  <p><strong>Name:</strong> {{ data.cluster.clusterName }}</p>
+  <p><strong>Status:</strong> {{ data.cluster.status }}</p>
+  <p><strong>Running Tasks:</strong> {{ data.cluster.runningTasksCount }} / {{ data.cluster.activeServicesCount }}</p>
+
+  <h3>Tags:</h3>
+  <ul *ngIf="data.cluster.tags?.length; else noTags">
+    <li *ngFor="let tag of data.cluster.tags">
+      <strong>{{ tag.key }}</strong>: {{ tag.value }}
+    </li>
+  </ul>
+
+  <ng-template #noTags>
+    <p>No tags available.</p>
+  </ng-template>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

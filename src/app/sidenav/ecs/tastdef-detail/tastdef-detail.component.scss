@@ -1,0 +1,49 @@
+mat-expansion-panel-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  mat-panel-title {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  }
+  
+  .fixed-height-tabs {
+    min-height: 300px; /* Pitää dialogin koon vakaana */
+  }
+  
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .json-textarea {
+    width: 100%;
+    box-sizing: border-box; /* Estää ylityksen */
+    min-height: 250px;
+    font-family: monospace;
+    overflow-x: auto; /* Varmistaa, ettei pakota skrollausta */
+    white-space: pre-wrap; /* Estää yhden pitkän rivin */
+    word-wrap: break-word;
+    resize: none;
+  }
+
+  .info-table {
+    width: 100%;
+    margin: auto;
+    margin-top: 1rem;
+    border-collapse: collapse;
+  
+    td {
+      padding: 4px 8px; /* Tiivistää tilaa */
+      vertical-align: top;
+    }
+  
+    td:first-child {
+      font-weight: bold;
+      white-space: nowrap; /* Estää sarakkeiden venymisen */
+    }
+  }
+
+  
