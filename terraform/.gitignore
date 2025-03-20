@@ -1,0 +1,4 @@
+# Ignore terraform state and provider caches
+# This is not intented to be handled like this
+.terraform*
+terraform.tfstate*
