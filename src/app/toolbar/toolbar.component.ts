@@ -121,9 +121,17 @@ export class ToolbarComponent {
    * Opens an Assume role dialog
    */
   openAssumeRoleDialog(): void {
-    this.dialog.open(AssumeRoleComponent, {
+    const dialogRef = this.dialog.open(AssumeRoleComponent, {
       width: '400px',
       data: { },
+    });
+
+    // After dialog is closed, add new account to saved accounts
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addSavedAccount(result.displayName, result.accountId, result.role, result.region);
+        this.selectedAccount = result.displayName;
+      }
     });
   }  
 

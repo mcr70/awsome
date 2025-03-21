@@ -46,6 +46,7 @@ export class AssumeRoleComponent {
     }
   }
 
+  // Called from the dialog close button
   closeDialog() {
     this.dialogRef.close();
   }
@@ -61,10 +62,13 @@ export class AssumeRoleComponent {
 
       try {
         await this.credentialService.assumeRole(`arn:aws:iam::${accountId}:role/${roleName}`, displayName, region);
-        this.closeDialog();
+        
+        // Close the dialog and pass the new account to the parent component
+        const newAccount = { displayName: displayName, accountId: accountId, role: roleName, region: region };
+        this.dialogRef.close(newAccount);
       }
       catch (error) {
-        console.error('FAILED to assume role', error);
+        console.error('Failed to assume role', error);
         this._snackBar.open('Failed to assume role: ' + error, 'Close', { duration: 5000 });
       }
     }    
