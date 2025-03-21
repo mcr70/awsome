@@ -94,11 +94,25 @@ resource "aws_cloudfront_distribution" "awsome" {
 
   default_cache_behavior {
     viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 10
+    default_ttl            = 300     # 5 minutes, adjust to your needs
+    max_ttl                = 86400
+
     compress               = true
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = aws_s3_bucket_website_configuration.awsome.website_endpoint
-    cache_policy_id = aws_cloudfront_cache_policy.awsome_cache_policy.id
+
+    forwarded_values {
+      headers                 = []
+      query_string            = false
+      query_string_cache_keys = []
+
+      cookies {
+          forward           = "none"
+          whitelisted_names = []
+        }
+    }
   }
 
   restrictions {
@@ -111,32 +125,6 @@ resource "aws_cloudfront_distribution" "awsome" {
     cloudfront_default_certificate = true
   }
 }
-
-resource "aws_cloudfront_cache_policy" "awsome_cache_policy" {
-  name        = "Managed-CachingOptimized"
-  comment     = "Policy with caching enabled. Supports Gzip and Brotli compression."
-  min_ttl     = 1
-  default_ttl = 86400
-  max_ttl     = 31536000
-
-  parameters_in_cache_key_and_forwarded_to_origin {
-    enable_accept_encoding_gzip = true
-    enable_accept_encoding_brotli = true
-
-    headers_config {
-      header_behavior = "none"
-    }
-
-    query_strings_config {
-      query_string_behavior = "none"
-    }
-
-    cookies_config {
-      cookie_behavior = "none"
-    }
-  }
-}
-
 
 output "awsome_url" {
   value = "https://${aws_cloudfront_distribution.awsome.domain_name}"

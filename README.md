@@ -71,3 +71,15 @@ Once the bucket and CloudFront distribution is created, build and copy the files
 ng build --configuration=production
 aws s3 sync ./dist/awsome/browser s3://my-awsome-ui --delete
 ```
+
+If you need to update the service to S3 bucket, remember that there may be some caching 
+involved with Cloudfront. To invalidate Cloudfront cache, you need to figure out your 
+distribution ID, and then call the invalidation, like this
+
+```bash
+aws cloudfront list-distributions --query "DistributionList.Items[*].Id"
+[
+    "...."
+]
+aws cloudfront create-invalidation --distribution-id .... --paths "/*"
+```

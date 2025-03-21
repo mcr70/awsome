@@ -61,7 +61,7 @@ export class AssumeRoleComponent {
       console.log('Assuming role: ', accountId, roleName, displayName, region);
 
       try {
-        await this.credentialService.assumeRole(`arn:aws:iam::${accountId}:role/${roleName}`, displayName, region);
+        await this.credentialService.assumeRole(`arn:aws:iam::${accountId}:role/${roleName}`, accountId, region);
         
         // Close the dialog and pass the new account to the parent component
         const newAccount = { displayName: displayName, accountId: accountId, role: roleName, region: region };
