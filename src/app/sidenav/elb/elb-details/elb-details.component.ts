@@ -10,7 +10,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ElbService } from '../../../services/elb.service';
-import { LoadBalancer, Rule, RuleCondition } from '@aws-sdk/client-elastic-load-balancing-v2';
+import { Listener, LoadBalancer, Rule, RuleCondition } from '@aws-sdk/client-elastic-load-balancing-v2';
 import { CredentialService } from '../../../services/credential.service';
 import { Subscription } from 'rxjs';
 import { SafeHtmlPipe } from './safeHtml.pipe';
@@ -31,14 +31,17 @@ export class ElbDetailsComponent extends CommonSidenavComponent implements OnIni
   }
 
   private credentialsSubscription?: Subscription;
-  
-  rulesDataSource = new MatTableDataSource<Rule>([]); 
+
+  listeners: Listener[] = [];
+  rulesDataSources: { [key: string]: MatTableDataSource<Rule> } = {};
+    
+  //rulesDataSource = new MatTableDataSource<Rule>([]); 
   elbDetails: { key: string; value: string }[] = [];
   elb: LoadBalancer | undefined;
 
   ngOnInit(): void {
     this.credentialsSubscription = this.credentialService.credentials$.subscribe(async (credentials) => {
-      this.rulesDataSource.data = [];
+      this.listeners = [];
       this.elbDetails = [];
       console.log('ElbDetailsComponent::ngOnInit() - credentials changed');
     });
@@ -73,15 +76,16 @@ export class ElbDetailsComponent extends CommonSidenavComponent implements OnIni
       ];
 
       try {
-        // TODO: handle multiple listeners
-        let listeners = await this.elbSvc.getListeners(this.elb.LoadBalancerArn || '');
-
-        for (let listener of listeners) {
-          this.rulesDataSource.data = await this.elbSvc.getRules(listener.ListenerArn || '');
+        this.listeners = await this.elbSvc.getListeners(this.elb.LoadBalancerArn || '');
+    
+        for (let listener of this.listeners) {
+          if (listener.ListenerArn) {
+            const rules = await this.elbSvc.getRules(listener.ListenerArn || '');
+            this.rulesDataSources[listener.ListenerArn] = new MatTableDataSource(rules);
+          }
         }
-      }
-      catch (error: unknown) {
-        console.error('Failed to get rules', error);
+      } catch (error: unknown) {
+        console.error('Failed to get listeners or rules', error);
         this.showErrorOnSnackBar(error);
       }
 
