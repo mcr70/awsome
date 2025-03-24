@@ -74,7 +74,7 @@ aws s3 sync ./dist/awsome/browser s3://my-awsome-ui --delete
 
 If you need to update the service to S3 bucket, remember that there may be some caching 
 involved with Cloudfront. To invalidate Cloudfront cache, you need to figure out your 
-distribution ID, and then call the invalidation, like this
+distribution ID, and then trigger the invalidation, like this
 
 ```bash
 aws cloudfront list-distributions --query "DistributionList.Items[*].Id"

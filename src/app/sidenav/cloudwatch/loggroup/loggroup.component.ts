@@ -30,7 +30,7 @@ export class LogGroupComponent implements OnInit, AfterViewInit {
 
   private _snackBar = inject(MatSnackBar);
 
-  dataSource = new MatTableDataSource<any>([]); // MatTableDataSource käyttöön
+  dataSource = new MatTableDataSource<any>([]); 
 
   logGroupName: string = '';
   logStreamName: string = '';
@@ -39,7 +39,7 @@ export class LogGroupComponent implements OnInit, AfterViewInit {
   intervalId: any = null;
   isPaused = false;
 
-  displayedColumns: string[] = ['timestamp', 'message']; // Taulukon sarakkeet
+  displayedColumns: string[] = ['timestamp', 'message'];
 
   constructor(
     private route: ActivatedRoute, 
@@ -80,7 +80,7 @@ export class LogGroupComponent implements OnInit, AfterViewInit {
     try {
       this.logStreams = await this.cloudWatch.getLogStreams(this.logGroupName);
       if (this.logStreams.length > 0) {
-        this.logStreamName = this.logStreams[0]; // Valitse ensimmäinen log stream
+        this.logStreamName = this.logStreams[0];
         await this.fetchLogEvents();
       }
     } 
@@ -104,8 +104,8 @@ export class LogGroupComponent implements OnInit, AfterViewInit {
       const events = await this.cloudWatch.getLogEvents(this.logGroupName, this.logStreamName);
       console.log("LogGroupComponent::fetchLogEvents, got " + events.length + " events");
 
-      this.dataSource.data = events; // Päivitä datasource
-      this.applyFilter(); // Suodata heti jos hakukentässä on arvo
+      this.dataSource.data = events;
+      this.applyFilter(); 
     }
     catch (error) {
       this.showErrorOnSnackBar(error);

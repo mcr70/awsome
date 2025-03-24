@@ -2,6 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { RouterModule } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
@@ -12,7 +13,7 @@ import { CredentialService } from '../../services/credential.service';
 
 @Component({
   selector: 'app-elb',
-  imports: [ MatTableModule, CommonModule ],
+  imports: [ MatTableModule, CommonModule, RouterModule ],
   templateUrl: './elb.component.html',
   styleUrl: './elb.component.scss'
 })
@@ -43,6 +44,11 @@ export class ElbComponent implements OnInit, OnDestroy {
       console.error('Failed to list CodeCommit repositories', error);
       this.showErrorOnSnackBar(error);
     }
+  }
+
+
+  getLoadBalancerShortId(arn: string): string {
+    return arn.split('/').pop() ?? '';
   }
 
   /**

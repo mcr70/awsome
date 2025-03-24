@@ -4,7 +4,9 @@
   <!-- Name Column -->
   <ng-container matColumnDef="loadBalancerName">
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let loadBalancer"> {{ loadBalancer.LoadBalancerName }} </mat-cell>
+    <mat-cell *matCellDef="let loadBalancer"> 
+      <a [routerLink]="['/elb/', getLoadBalancerShortId(loadBalancer.LoadBalancerArn)]">{{ loadBalancer.LoadBalancerName }}</a>
+    </mat-cell>
   </ng-container>
 
   <!-- DNS Name Column -->
