@@ -39,30 +39,54 @@
           <mat-panel-title> Listener {{ listener.Port }} ({{ listener.Protocol }}) </mat-panel-title>
         </mat-expansion-panel-header>
     
-        <div class="rules-table-container">
-          <table mat-table [dataSource]="rulesDataSources[listener.ListenerArn || '']" class="mat-elevation-z8">
-
-            <ng-container matColumnDef="priority">
-              <th mat-header-cell *matHeaderCellDef> Priority </th>
-              <td mat-cell *matCellDef="let rule"> {{ rule.Priority }} </td>
-            </ng-container>
+        <div class="listener-container">
+          <!-- Tabs: "Rules" and other listener info -->
+          <mat-tab-group>
+            <!-- First Tab: Rules -->
+            <mat-tab label="Rules">
+              <table mat-table [dataSource]="rulesDataSources[listener.ListenerArn || '']" class="mat-elevation-z8">
+                <ng-container matColumnDef="priority">
+                  <th mat-header-cell *matHeaderCellDef> Priority </th>
+                  <td mat-cell *matCellDef="let rule"> {{ rule.Priority }} </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="condition">
+                  <th mat-header-cell *matHeaderCellDef> Condition </th>
+                  <td mat-cell *matCellDef="let rule">
+                    <span [innerHTML]="ruleConditionToString(rule).replace('AND', '<br>') | safeHtml"></span>
+                  </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="action">
+                  <th mat-header-cell *matHeaderCellDef> Action </th>
+                  <td mat-cell *matCellDef="let rule"> {{ ruleActionToString(rule) }} </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="['priority', 'condition', 'action']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['priority', 'condition', 'action'];"></tr>
+              </table>
+            </mat-tab>
     
-            <ng-container matColumnDef="condition">
-              <th mat-header-cell *matHeaderCellDef> Condition </th>
-              <td mat-cell *matCellDef="let rule">
-                <span [innerHTML]="ruleConditionToString(rule).replace('AND', '<br>') | safeHtml"></span>
-              </td>
-            </ng-container>
-    
-            <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef> Action </th>
-              <td mat-cell *matCellDef="let rule"> {{ ruleActionToString(rule) }} </td>
-            </ng-container>
-    
-            <tr mat-header-row *matHeaderRowDef="['priority', 'condition', 'action']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['priority', 'condition', 'action'];"></tr>
-          </table>
+            <!-- Second Tab: Other listener details -->
+            <mat-tab label="Details">
+              <div>
+                <p><strong>Listener ARN:</strong> {{ listener.ListenerArn }}</p>
+                <p><strong>Port:</strong> {{ listener.Port }}</p>
+                <p><strong>Protocol:</strong> {{ listener.Protocol }}</p>
+                <p *ngIf="listener.SslPolicy"><strong>Policy:</strong>  {{ listener.SslPolicy }}</p>
+                <p *ngIf="listener.Certificates"><strong>Certificates</strong></p>
+                <ul>
+                  <li *ngFor="let cert of listener.Certificates">
+                    {{ cert.CertificateArn }}{{ cert.IsDefault ? ', Default' : '' }}
+                  </li>
+                </ul>
+                
+                <!-- Add any other listener details here -->
+              </div>
+            </mat-tab>
+          </mat-tab-group>
         </div>
+
       </mat-expansion-panel>
     </mat-accordion>
 

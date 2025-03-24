@@ -6,6 +6,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -20,7 +21,7 @@ import { SafeHtmlPipe } from './safeHtml.pipe';
   selector: 'app-elb-details',
   imports: [
     CommonModule, MatExpansionModule, MatListModule, MatIconModule, MatButtonModule, MatTableModule, RouterModule,
-    SafeHtmlPipe
+    SafeHtmlPipe, MatTabsModule
   ],
   templateUrl: './elb-details.component.html',
   styleUrl: './elb-details.component.scss'
