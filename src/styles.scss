@@ -37,3 +37,11 @@ mat-dialog-content {
   margin-top: 10px;
 }
 
+
+.info-link {
+  color: #1976d2; //var(--mat-primary); /* Material Designin ensisijainen väri */
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: normal; /* Poistaa boldauksen */
+  margin-left: 1rem;    
+}

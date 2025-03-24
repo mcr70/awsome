@@ -170,13 +170,13 @@ needed. These services should be created there
     ```html
     <p>Clusters</p>
 
-    <mat-accordion class="example-headers-align" multi="false">
+    <mat-accordion multi="false">
         <ng-container *ngFor="let cluster of clusters(); trackBy: trackByCluster">
             <mat-expansion-panel (opened)="expansionPanelState(cluster, true)" (closed)="expansionPanelState(cluster, false)" [expanded]="false">
                 <mat-expansion-panel-header>
                 <mat-panel-title> 
                     {{ cluster }} 
-                    <a (click)="openClusterDetails(cluster, $event)" class="details-link">[ info ]</a>
+                    <a (click)="openClusterDetails(cluster, $event)" class="info-link">[ info ]</a>
                 </mat-panel-title>
                 </mat-expansion-panel-header>
     ```

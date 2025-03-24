@@ -4,7 +4,7 @@
  * 
  */
 import { Injectable } from '@angular/core';
-import { DescribeListenersOutput, DescribeRulesOutput, ElasticLoadBalancingV2, ElasticLoadBalancingV2Client, Listener, LoadBalancer, Rule } from '@aws-sdk/client-elastic-load-balancing-v2';
+import { Certificate, DescribeListenerCertificatesCommand, DescribeListenerCertificatesCommandOutput, DescribeListenersOutput, DescribeRulesOutput, ElasticLoadBalancingV2, ElasticLoadBalancingV2Client, Listener, LoadBalancer, Rule } from '@aws-sdk/client-elastic-load-balancing-v2';
 
 import { filter, firstValueFrom } from 'rxjs';
 
@@ -38,9 +38,15 @@ export class ElbService {
     return result.LoadBalancers ?? [];
   }
 
-
-  async getListeners(arn: string, pageSize: number = 20): Promise<Listener[]> {
-    console.log(`ElbService::getListeners(${arn})`);
+  /**
+   * Gets listeners for a given LoadBalancer.
+   * 
+   * @param elbArn ARN of the LoadBalancer
+   * @param pageSize 
+   * @returns Promise<Listener[]>
+   */
+  async getListeners(elbArn: string, pageSize: number = 20): Promise<Listener[]> {
+    console.log(`ElbService::getListeners(${elbArn})`);
 
     const elb = await this.getClient();
 
@@ -49,7 +55,7 @@ export class ElbService {
 
     do {
       const result: DescribeListenersOutput = await elb.describeListeners({
-        LoadBalancerArn: arn,
+        LoadBalancerArn: elbArn,
         Marker: nextMarker,
         PageSize: pageSize
       });
@@ -94,6 +100,39 @@ export class ElbService {
 
     return rules;
   }
+
+
+  /**
+   * Gets all the certificates for a given listener.
+   * 
+   * @param listenerArn Arn of the listener
+   * @param pageSize 
+   * @returns Promise<Certificate[]>
+   */
+  async getListenerCertificates(listenerArn: string, pageSize: number = 10): Promise<Certificate[]> {
+    console.log(`ElbService::getListenerCertificates(${listenerArn})`);
+
+    const elb = await this.getClient();
+
+    let certificates: Certificate[] = [];
+    let nextMarker: string | undefined = undefined;
+
+    do {
+      const result: DescribeListenerCertificatesCommandOutput = await elb.describeListenerCertificates({
+        ListenerArn: listenerArn,
+        Marker: nextMarker,
+        PageSize: pageSize
+      });
+    
+      if (result.Certificates) {
+        certificates = certificates.concat(result.Certificates);
+      }
+    
+      nextMarker = result.NextMarker;
+    } while (nextMarker);    
+
+    return certificates;
+}
 
 
   /**

@@ -36,14 +36,13 @@
     <mat-accordion multi>
       <mat-expansion-panel *ngFor="let listener of listeners; let i = index" [expanded]="i === 0">
         <mat-expansion-panel-header>
-          <mat-panel-title> Listener {{ listener.Port }} ({{ listener.Protocol }}) </mat-panel-title>
+          <mat-panel-title> Listener {{ listener.Port }} ({{ listener.Protocol }}) 
+            <a (click)="openListenerDetails(listener, $event)" class="info-link">[ info ]</a>
+          </mat-panel-title>
         </mat-expansion-panel-header>
     
         <div class="listener-container">
           <!-- Tabs: "Rules" and other listener info -->
-          <mat-tab-group>
-            <!-- First Tab: Rules -->
-            <mat-tab label="Rules">
               <table mat-table [dataSource]="rulesDataSources[listener.ListenerArn || '']" class="mat-elevation-z8">
                 <ng-container matColumnDef="priority">
                   <th mat-header-cell *matHeaderCellDef> Priority </th>
@@ -64,27 +63,7 @@
         
                 <tr mat-header-row *matHeaderRowDef="['priority', 'condition', 'action']"></tr>
                 <tr mat-row *matRowDef="let row; columns: ['priority', 'condition', 'action'];"></tr>
-              </table>
-            </mat-tab>
-    
-            <!-- Second Tab: Other listener details -->
-            <mat-tab label="Details">
-              <div>
-                <p><strong>Listener ARN:</strong> {{ listener.ListenerArn }}</p>
-                <p><strong>Port:</strong> {{ listener.Port }}</p>
-                <p><strong>Protocol:</strong> {{ listener.Protocol }}</p>
-                <p *ngIf="listener.SslPolicy"><strong>Policy:</strong>  {{ listener.SslPolicy }}</p>
-                <p *ngIf="listener.Certificates"><strong>Certificates</strong></p>
-                <ul>
-                  <li *ngFor="let cert of listener.Certificates">
-                    {{ cert.CertificateArn }}{{ cert.IsDefault ? ', Default' : '' }}
-                  </li>
-                </ul>
-                
-                <!-- Add any other listener details here -->
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+              </table>    
         </div>
 
       </mat-expansion-panel>

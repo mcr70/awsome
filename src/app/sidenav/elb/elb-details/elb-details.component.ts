@@ -15,6 +15,8 @@ import { Listener, LoadBalancer, Rule, RuleCondition } from '@aws-sdk/client-ela
 import { CredentialService } from '../../../services/credential.service';
 import { Subscription } from 'rxjs';
 import { SafeHtmlPipe } from './safeHtml.pipe';
+import { ListenerDetailComponent } from '../listener-detail/listener-detail.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -27,7 +29,8 @@ import { SafeHtmlPipe } from './safeHtml.pipe';
   styleUrl: './elb-details.component.scss'
 })
 export class ElbDetailsComponent extends CommonSidenavComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private elbSvc: ElbService, private credentialService: CredentialService) {
+  constructor(private route: ActivatedRoute, private dialog: MatDialog,
+    private elbSvc: ElbService, private credentialService: CredentialService) {
     super();
   }
 
@@ -140,7 +143,7 @@ export class ElbDetailsComponent extends CommonSidenavComponent implements OnIni
           ruleAction += ' AND ';
         }
         if (action.Type === 'forward') {
-          ruleAction += `Forward to: ${action.TargetGroupArn?.split("/")[1] ?? "???"}`;
+          ruleAction += `${action.TargetGroupArn?.split("/")[1] ?? "???"}`;
         }
         else if (action.Type === 'redirect') {        
           ruleAction += `Redirect to: (${action.RedirectConfig?.StatusCode}) ${action.RedirectConfig?.Protocol}://${action.RedirectConfig?.Host}:${action.RedirectConfig?.Port}/${action.RedirectConfig?.Path}?${action.RedirectConfig?.Query}`;
@@ -161,4 +164,28 @@ export class ElbDetailsComponent extends CommonSidenavComponent implements OnIni
       return 'Not available';
     }
   }
+
+  /**
+   * A method that opens listener-detail dialog
+   * @param  
+   * @param $event 
+   */
+  async openListenerDetails(listener: Listener, $event: MouseEvent) {
+    $event.stopPropagation(); // Prevent mat-expansion-panel opening
+
+    try {
+      let certificates = await this.elbSvc.getListenerCertificates(listener.ListenerArn || '');
+      certificates = certificates.filter((cert, index, self) =>  // Remove duplicates
+        index === self.findIndex(t => t.CertificateArn === cert.CertificateArn)
+      );
+
+      this.dialog.open(ListenerDetailComponent, {
+        width: '600px',
+        data: { listener, certificates }
+      });
+    }
+    catch(error: unknown) {
+      this.showErrorOnSnackBar(error);
+    }
+  }  
 }

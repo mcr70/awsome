@@ -1,12 +1,12 @@
 <h3>Clusters</h3>
 
-<mat-accordion class="example-headers-align" multi="false">
+<mat-accordion multi="false">
     <ng-container *ngFor="let cluster of clusters(); trackBy: trackByCluster">
         <mat-expansion-panel (opened)="expansionPanelState(cluster, true)" (closed)="expansionPanelState(cluster, false)" [expanded]="false">
             <mat-expansion-panel-header>
             <mat-panel-title> 
                 {{ cluster }} 
-                <a (click)="openClusterDetails(cluster, $event)" class="details-link">[ info ]</a>
+                <a (click)="openClusterDetails(cluster, $event)" class="info-link">[ info ]</a>
             </mat-panel-title>
             </mat-expansion-panel-header>
 
@@ -15,7 +15,7 @@
                 <ng-container matColumnDef="serviceName">
                   <mat-header-cell *matHeaderCellDef> Service Name </mat-header-cell>
                   <mat-cell *matCellDef="let svc">
-                    <a (click)="openServiceDetails(cluster, svc.serviceName, $event)" class="details-link">{{ svc.serviceName }}</a>
+                    <a (click)="openServiceDetails(cluster, svc.serviceName, $event)" class="info-link">{{ svc.serviceName }}</a>
                   </mat-cell>
                 </ng-container>
 
@@ -23,7 +23,7 @@
                 <ng-container matColumnDef="taskDefinition">
                     <mat-header-cell *matHeaderCellDef> Task Definition </mat-header-cell>
                     <mat-cell *matCellDef="let svc">
-                        <a (click)="openTaskdefDetails(svc.taskDefinition, $event)" class="details-link">{{ getTaskDefinitionName(svc.taskDefinition) }}</a>
+                        <a (click)="openTaskdefDetails(svc.taskDefinition, $event)" class="info-link">{{ getTaskDefinitionName(svc.taskDefinition) }}</a>
                     </mat-cell>
                 </ng-container>
 
