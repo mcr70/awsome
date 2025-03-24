@@ -40,3 +40,7 @@
         </mat-expansion-panel>
     </ng-container>
 </mat-accordion>
+
+<div *ngIf="clusters()?.length === 0">
+    <p>No ECS Clusters found.</p>
+</div>
