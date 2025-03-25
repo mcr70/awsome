@@ -54,9 +54,8 @@ export class CloudWatchComponent implements OnInit, OnDestroy {
   async listLogGroups() {
     try {
       this.logGroups = await this.cWatch.listLogGroups();
-      this.dataSource.data = this.logGroups; // Päivitetään data lähde
+      this.dataSource.data = this.logGroups; 
   
-      // Asetetaan filterPredicate uudestaan, jotta se toimii datan kanssa
       this.dataSource.filterPredicate = (data: LogGroup, filter: string): boolean => {
         return (data.logGroupName ?? '').toLowerCase().includes(filter);
       };

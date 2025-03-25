@@ -11,3 +11,8 @@
       <mat-row *matRowDef="let row; columns: ['repository'];"></mat-row>
     </mat-table>
 </div>
+
+<div *ngIf="repositories.length === 0">
+    <p>No repositories found.</p>
+</div>
+

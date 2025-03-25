@@ -1,10 +1,12 @@
 <h3>Load Balancers</h3>
 
-<mat-table [dataSource]="loadbalancers" class="mat-elevation-z8">
+<mat-table *ngIf="loadbalancers.length > 0" [dataSource]="loadbalancers" class="mat-elevation-z8">
   <!-- Name Column -->
   <ng-container matColumnDef="loadBalancerName">
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let loadBalancer"> {{ loadBalancer.LoadBalancerName }} </mat-cell>
+    <mat-cell *matCellDef="let loadBalancer"> 
+      <a [routerLink]="['/elb/', getLoadBalancerShortId(loadBalancer.LoadBalancerArn)]">{{ loadBalancer.LoadBalancerName }}</a>
+    </mat-cell>
   </ng-container>
 
   <!-- DNS Name Column -->
@@ -23,3 +25,8 @@
   <mat-header-row *matHeaderRowDef="['loadBalancerName', 'dnsName', 'type']"></mat-header-row>
   <mat-row *matRowDef="let row; columns: ['loadBalancerName', 'dnsName', 'type']"></mat-row>
 </mat-table>
+
+<!-- No loadbalancers found in current account and region -->
+<div *ngIf="loadbalancers.length === 0">
+  <p>No Load Balancers found.</p>
+</div>

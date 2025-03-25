@@ -11,7 +11,7 @@ import { Cluster } from '@aws-sdk/client-ecs';
   selector: 'app-cluster-details',
   templateUrl: './cluster-detail.component.html',
   styleUrls: ['./cluster-detail.component.scss'],
-  imports: [MatDialogModule, CommonModule]
+  imports: [ MatDialogModule, CommonModule ]
 })
 export class ClusterDetailComponent {
   constructor(

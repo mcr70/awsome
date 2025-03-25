@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Listener Details</h2>
+<mat-dialog-content>
+    <p><strong>ARN:</strong> {{ data.listener.ListenerArn }}</p>
+    <p><strong>Port:</strong> {{ data.listener.Port }}</p>
+    <p><strong>Protocol:</strong> {{ data.listener.Protocol }}</p>
+    <p *ngIf="data.listener.SslPolicy"><strong>SSL Policy:</strong>  {{ data.listener.SslPolicy }}</p>
+    <p *ngIf="data.listener.Certificates"><strong>Certificates</strong></p>
+    <ul>
+      <!-- <li *ngFor="let cert of data.listener.Certificates">
+        Default: {{ cert.CertificateArn }}
+      </li> -->
+      <li *ngFor="let cert of data.certificates">
+        {{ cert.CertificateArn }}{{ cert.IsDefault ? ', Default' : '' }}
+      </li>
+    </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>
