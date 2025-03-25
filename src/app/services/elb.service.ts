@@ -170,7 +170,6 @@ export class ElbService {
    */
   findLoadBalancerById(id: string): LoadBalancer | undefined {
     console.log(`ElbService::findLoadBalancerById(${id})`);
-    console.log('LoadBalancers:', this.getLoadBalancers());
     return this.getLoadBalancers().find(lb => lb.LoadBalancerArn?.endsWith(id));
   }
 
