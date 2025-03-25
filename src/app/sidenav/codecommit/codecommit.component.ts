@@ -6,6 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CodecommitService } from '../../services/codecommit.service';
 import { CredentialService } from '../../services/credential.service';
 import { Subscription } from 'rxjs';
+import { CommonSidenavComponent } from '../common.component';
 
 @Component({
   standalone: true,
@@ -17,11 +18,12 @@ import { Subscription } from 'rxjs';
     MatTableModule
   ], 
 })
-export class CodecommitComponent implements OnInit, OnDestroy {
+export class CodecommitComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;
-  private _snackBar = inject(MatSnackBar);
 
-  constructor(private cc: CodecommitService, private credentialService: CredentialService) {}
+  constructor(private cc: CodecommitService, private credentialService: CredentialService) {
+    super();
+  }
   
   repositories: string[] = [];
 
@@ -46,23 +48,5 @@ export class CodecommitComponent implements OnInit, OnDestroy {
       console.error('Failed to list CodeCommit repositories', error);
       this.showErrorOnSnackBar(error);
     }
-  }
-
-  /**
-   * Opens a snackbar with given error and duration
-   * @param error 
-   * @param dur 
-   */
-  private showErrorOnSnackBar(error: unknown, dur: number = 5000) {
-    if (error instanceof Error) {
-      this.showSnackBar(error.message);
-    } else {
-      this.showSnackBar('Unknown error occurred');
-    }
-  }
-
-
-  private showSnackBar(message: string, dur: number = 5000) {
-    this._snackBar.open(message, 'Close', { duration: dur });
   }
 }

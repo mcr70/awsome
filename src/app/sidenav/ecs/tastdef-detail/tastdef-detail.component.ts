@@ -33,10 +33,7 @@ export class TaskdefDetailComponent {
     const textToCopy = document.querySelector('pre')?.textContent;
     if (textToCopy) {
       // copy to clipboard
-      navigator.clipboard.writeText(textToCopy).then(
-        () => console.log('Sisältö kopioitu leikepöydälle'),
-        (err) => console.error('Kopiointi epäonnistui', err)
-      );
+      navigator.clipboard.writeText(textToCopy);
     }
   }
     

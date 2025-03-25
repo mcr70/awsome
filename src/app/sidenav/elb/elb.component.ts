@@ -10,6 +10,7 @@ import { LoadBalancer } from '@aws-sdk/client-elastic-load-balancing-v2';
 
 import { ElbService } from '../../services/elb.service';
 import { CredentialService } from '../../services/credential.service';
+import { CommonSidenavComponent } from '../common.component';
 
 @Component({
   selector: 'app-elb',
@@ -17,13 +18,14 @@ import { CredentialService } from '../../services/credential.service';
   templateUrl: './elb.component.html',
   styleUrl: './elb.component.scss'
 })
-export class ElbComponent implements OnInit, OnDestroy {
+export class ElbComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;
-  private _snackBar = inject(MatSnackBar);
   loadbalancers: LoadBalancer[] = [];
 
 
-  constructor(private elb: ElbService, private credentialService: CredentialService) {}
+  constructor(private elb: ElbService, private credentialService: CredentialService) {
+    super();
+  }
 
   async ngOnInit() {
     this.credentialsSubscription = this.credentialService.credentials$.subscribe(async (credentials) => {
@@ -51,21 +53,4 @@ export class ElbComponent implements OnInit, OnDestroy {
     return arn.split('/').pop() ?? '';
   }
 
-  /**
-   * Opens a snackbar with given error and duration
-   * @param error 
-   * @param dur 
-   */
-  private showErrorOnSnackBar(error: unknown, dur: number = 5000) {
-    if (error instanceof Error) {
-      this.showSnackBar(error.message);
-    } else {
-      this.showSnackBar('Unknown error occurred');
-    }
-  }
-
-
-  private showSnackBar(message: string, dur: number = 5000) {
-    this._snackBar.open(message, 'Close', { duration: dur });
-  }
 }

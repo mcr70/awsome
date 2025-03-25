@@ -13,6 +13,7 @@ import { LogGroup } from '@aws-sdk/client-cloudwatch-logs';
 
 import { CloudWatchService } from '../../services/cloudwatch.service';
 import { CredentialService } from '../../services/credential.service';
+import { CommonSidenavComponent } from '../common.component';
 
 @Component({
   selector: 'app-cloud-watch',
@@ -22,15 +23,16 @@ import { CredentialService } from '../../services/credential.service';
   imports: [CommonModule, MatTableModule, RouterModule, MatFormFieldModule, MatInputModule, FormsModule],
   providers: [DatePipe],
 })
-export class CloudWatchComponent implements OnInit, OnDestroy {
+export class CloudWatchComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;
-  private _snackBar = inject(MatSnackBar);
 
   displayedColumns: string[] = ['logGroupName', 'retentionInDays', 'storedBytes'];
   logGroups: LogGroup[] = [];
   dataSource = new MatTableDataSource(this.logGroups);
 
-  constructor(private cWatch: CloudWatchService, private credentialService: CredentialService) {}
+  constructor(private cWatch: CloudWatchService, private credentialService: CredentialService) {
+    super();
+  }
   
   async ngOnInit() {
     this.dataSource.filterPredicate = (data: LogGroup, filter: string): boolean => {
@@ -62,19 +64,5 @@ export class CloudWatchComponent implements OnInit, OnDestroy {
     } catch (error: unknown) {
       this.showErrorOnSnackBar(error);
     }
-  }
-  
-  
-
-  private showErrorOnSnackBar(error: unknown, dur: number = 5000) {
-    if (error instanceof Error) {
-      this.showSnackBar(error.message);
-    } else {
-      this.showSnackBar('Unknown error occurred');
-    }
-  }
-
-  private showSnackBar(message: string, dur: number = 5000) {
-    this._snackBar.open(message, 'Close', { duration: dur });
   }
 }

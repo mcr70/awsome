@@ -14,6 +14,7 @@ import { ClusterDetailComponent } from './cluster-detail/cluster-detail.componen
 import { TaskdefDetailComponent } from './tastdef-detail/tastdef-detail.component'
 import { ServiceDetailComponent } from './service-detail/service-detail.component';
 import { Subscription } from 'rxjs';
+import { CommonSidenavComponent } from '../common.component';
 
 
 @Component({
@@ -23,9 +24,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./ecs.component.scss'],
   imports: [ CommonModule, MatExpansionModule, MatTableModule ]
 })
-export class EcsComponent implements OnInit, OnDestroy {
+export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;
-  private _snackBar = inject(MatSnackBar);
 
   readonly panelOpenState = signal<{ [clusterArn: string]: boolean }>({});
   clusters = signal<string[] | undefined>([]);
@@ -33,6 +33,7 @@ export class EcsComponent implements OnInit, OnDestroy {
 
   constructor(private ecs: ECSService, private credentialService: CredentialService,
     private dialog: MatDialog) {
+    super();
   }
 
 
@@ -163,28 +164,5 @@ export class EcsComponent implements OnInit, OnDestroy {
       this.showErrorOnSnackBar(error)
       this.services.update(services => ({ ...services, [clusterArn]: [] }))
     }    
-  }
-
-
-  /**
-   * Opens a Snackbar with given message and duration
-   * @param message 
-   * @param dur 
-   */
-  private showSnackBar(message: string, dur: number = 5000) {
-    this._snackBar.open(message, 'Close', { duration: dur });
-  }
-
-  /**
-   * Opens a snackbar with given error and duration
-   * @param error 
-   * @param dur 
-   */
-  private showErrorOnSnackBar(error: unknown, dur: number = 5000) {
-    if (error instanceof Error) {
-      this.showSnackBar(error.message);
-    } else {
-      this.showSnackBar('Unknown error occurred');
-    }
   }
 }
