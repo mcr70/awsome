@@ -4,7 +4,7 @@
  * 
  */
 import { Injectable } from '@angular/core';
-import { CloudWatchLogs, DescribeLogStreamsCommand, FilterLogEventsCommand, LogGroup, OrderBy } from '@aws-sdk/client-cloudwatch-logs';
+import { CloudWatchLogs, DescribeLogStreamsCommand, FilterLogEventsCommand, LogGroup, OrderBy, OutputLogEvent } from '@aws-sdk/client-cloudwatch-logs';
 
 import { CredentialModel, CredentialService } from './credential.service';
 import { filter, firstValueFrom } from 'rxjs';
@@ -53,7 +53,7 @@ export class CloudWatchService {
     return response.logStreams?.map(stream => stream.logStreamName ?? '') ?? [];
   }
 
-  async getLogEvents(logGroupName: string, logStreamName: string): Promise<any[]> {
+  async getLogEvents(logGroupName: string, logStreamName: string): Promise<OutputLogEvent[]> {
     console.log(`CloudWatchService::getLogEvents(${logGroupName}, ${logStreamName})`);
 
     const client = await this.getClient();
@@ -78,6 +78,8 @@ export class CloudWatchService {
 
     return response.events ?? [];
   }
+
+  
   /**
    * Gets a ElasticLoadBalancingV2Client and throws an Error is credentials are missing.
    * @returns 
