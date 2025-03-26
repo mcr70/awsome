@@ -53,7 +53,14 @@ export class CloudWatchService {
     return response.logStreams?.map(stream => stream.logStreamName ?? '') ?? [];
   }
 
-  async getLogEvents(logGroupName: string, logStreamName: string): Promise<OutputLogEvent[]> {
+  async getPreviousLogEvents(logGroupName: string, logStreamName: string): Promise<OutputLogEvent[]> {
+    return this.getLogEvents(logGroupName, logStreamName, true);
+  }
+  async getNextLogEvents(logGroupName: string, logStreamName: string): Promise<OutputLogEvent[]> {
+    return this.getLogEvents(logGroupName, logStreamName, false);
+  }
+
+  async getLogEvents(logGroupName: string, logStreamName: string, isPrevious: boolean = false): Promise<OutputLogEvent[]> {
     console.log(`CloudWatchService::getLogEvents(${logGroupName}, ${logStreamName})`);
 
     const client = await this.getClient();
@@ -62,7 +69,7 @@ export class CloudWatchService {
       logGroupName,
       logStreamName,
       limit: 100,  // Max 100 events
-      startFromHead: false
+      startFromHead: isPrevious
     };
 
     let response = await client.getLogEvents(params);
@@ -79,9 +86,9 @@ export class CloudWatchService {
     return response.events ?? [];
   }
 
-  
+
   /**
-   * Gets a ElasticLoadBalancingV2Client and throws an Error is credentials are missing.
+   * Gets a CloudWatchLogs and throws an Error is credentials are missing.
    * @returns 
    */
   private async getClient(): Promise<CloudWatchLogs> {
