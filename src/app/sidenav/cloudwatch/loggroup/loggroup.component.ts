@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ResourceNotFoundException } from '@aws-sdk/client-cloudwatch-logs';
+import { OutputLogEvent, ResourceNotFoundException } from '@aws-sdk/client-cloudwatch-logs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonSidenavComponent } from '../../common.component';
 
@@ -29,7 +29,9 @@ import { CommonSidenavComponent } from '../../common.component';
 export class LogGroupComponent extends CommonSidenavComponent implements OnInit, AfterViewInit {
   @ViewChild('logFilter') logFilter!: ElementRef<HTMLInputElement>;
 
-  dataSource = new MatTableDataSource<any>([]); 
+  dataSource = new MatTableDataSource<OutputLogEvent>([]); 
+  prevToken: string | undefined = undefined;
+  nextToken: string | undefined = undefined;
 
   logGroupName: string = '';
   logStreamName: string = '';
@@ -98,9 +100,37 @@ export class LogGroupComponent extends CommonSidenavComponent implements OnInit,
     }
   }
 
-  async fetchPrevious($event: MouseEvent) {
+  async fetchLogEventsWithToken($event: MouseEvent, isPrevious: boolean) {
     $event.stopPropagation();
     if (!this.isPaused) return;
+
+    const params = {
+      logGroupName: this.logGroupName,
+      logStreamName: this.logStreamName,
+      nextToken: isPrevious ? this.prevToken : this.nextToken,
+      startFromHead: isPrevious,
+    }
+
+    try {
+      const response = await this.cloudWatch.getLogEvents(params);
+      this.prevToken = response.nextBackwardToken;
+      this.nextToken = response.nextForwardToken;
+      console.log(`LogGroupComponent::fetchLogEvents, got ${response.events?.length} events`);
+
+      this.dataSource.data = response.events || [];
+      this.applyFilter(); 
+    }
+    catch (error) {
+      this.showErrorOnSnackBar(error);
+
+      if (error instanceof ResourceNotFoundException) {
+        console.error("LogGroupComponent::fetchLogEvents, log group not found: ", this.logGroupName);
+
+        this.router.navigate(['../'], { relativeTo: this.route });
+        return;
+      }
+    }
+
   }
 
   async fetchLogEvents() {
@@ -108,10 +138,12 @@ export class LogGroupComponent extends CommonSidenavComponent implements OnInit,
     if (!this.logStreamName) return;
 
     try {
-      const events = await this.cloudWatch.getLogEvents(this.logGroupName, this.logStreamName);
-      console.log("LogGroupComponent::fetchLogEvents, got " + events.length + " events");
+      const response = await this.cloudWatch.getLogEvents({logGroupName: this.logGroupName, logStreamName: this.logStreamName});
+      this.prevToken = response.nextBackwardToken;
+      this.nextToken = response.nextForwardToken;
+      console.log(`LogGroupComponent::fetchLogEvents, got ${response.events?.length} events`);
 
-      this.dataSource.data = events;
+      this.dataSource.data = response.events || [];
       this.applyFilter(); 
     }
     catch (error) {

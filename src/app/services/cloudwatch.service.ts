@@ -4,7 +4,7 @@
  * 
  */
 import { Injectable } from '@angular/core';
-import { CloudWatchLogs, DescribeLogStreamsCommand, FilterLogEventsCommand, LogGroup, OrderBy, OutputLogEvent } from '@aws-sdk/client-cloudwatch-logs';
+import { CloudWatchLogs, DescribeLogStreamsCommand, FilterLogEventsCommand, GetLogEventsResponse, LogGroup, OrderBy, OutputLogEvent } from '@aws-sdk/client-cloudwatch-logs';
 
 import { CredentialModel, CredentialService } from './credential.service';
 import { filter, firstValueFrom } from 'rxjs';
@@ -53,26 +53,22 @@ export class CloudWatchService {
     return response.logStreams?.map(stream => stream.logStreamName ?? '') ?? [];
   }
 
-  async getPreviousLogEvents(logGroupName: string, logStreamName: string): Promise<OutputLogEvent[]> {
-    return this.getLogEvents(logGroupName, logStreamName, true);
-  }
-  async getNextLogEvents(logGroupName: string, logStreamName: string): Promise<OutputLogEvent[]> {
-    return this.getLogEvents(logGroupName, logStreamName, false);
-  }
-
-  async getLogEvents(logGroupName: string, logStreamName: string, isPrevious: boolean = false): Promise<OutputLogEvent[]> {
-    console.log(`CloudWatchService::getLogEvents(${logGroupName}, ${logStreamName})`);
+  
+  async getLogEvents(params: { 
+    logGroupName: string; logStreamName: string; // These are mandatory
+    limit?: number; startFromHead?: boolean; nextToken?: string; // Optional
+  }): Promise<GetLogEventsResponse> {
+    console.log(`CloudWatchService::getLogEvents(${JSON.stringify(params)})`);
 
     const client = await this.getClient();
     
-    const params = {
-      logGroupName,
-      logStreamName,
-      limit: 100,  // Max 100 events
-      startFromHead: isPrevious
+    const queryParams = {
+      ...params,
+      limit: params.limit ?? 100,
+      startFromHead: params.startFromHead ?? false,
     };
 
-    let response = await client.getLogEvents(params);
+    let response = await client.getLogEvents(queryParams);
 
     // For some reason, on some older streams, first query results in no events
     if (!response.events?.length && response.nextBackwardToken) {
@@ -83,7 +79,7 @@ export class CloudWatchService {
       });
     }
 
-    return response.events ?? [];
+    return response;
   }
 
 

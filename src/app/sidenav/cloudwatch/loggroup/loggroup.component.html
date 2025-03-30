@@ -11,8 +11,8 @@
                 <mat-icon>{{ isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
             </button>
             <div *ngIf="isPaused">
-                <a (click)="fetchPrevious($event)" class="info-link">previous</a>
-                <a (click)="fetchPrevious($event)" class="info-link">next</a>
+                <a (click)="fetchLogEventsWithToken($event, true)" class="info-link">previous</a>
+                <a (click)="fetchLogEventsWithToken($event, false)" class="info-link">next</a>
             </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
