@@ -4,7 +4,7 @@
  * 
  */
 import { Injectable } from '@angular/core';
-import { CloudWatchLogs, DescribeLogStreamsCommand, FilterLogEventsCommand, LogGroup, OrderBy } from '@aws-sdk/client-cloudwatch-logs';
+import { CloudWatchLogs, DescribeLogStreamsCommand, FilterLogEventsCommand, GetLogEventsResponse, LogGroup, OrderBy, OutputLogEvent } from '@aws-sdk/client-cloudwatch-logs';
 
 import { CredentialModel, CredentialService } from './credential.service';
 import { filter, firstValueFrom } from 'rxjs';
@@ -53,19 +53,22 @@ export class CloudWatchService {
     return response.logStreams?.map(stream => stream.logStreamName ?? '') ?? [];
   }
 
-  async getLogEvents(logGroupName: string, logStreamName: string): Promise<any[]> {
-    console.log(`CloudWatchService::getLogEvents(${logGroupName}, ${logStreamName})`);
+  
+  async getLogEvents(params: { 
+    logGroupName: string; logStreamName: string; // These are mandatory
+    limit?: number; startFromHead?: boolean; nextToken?: string; // Optional
+  }): Promise<GetLogEventsResponse> {
+    console.log(`CloudWatchService::getLogEvents(${JSON.stringify(params)})`);
 
     const client = await this.getClient();
     
-    const params = {
-      logGroupName,
-      logStreamName,
-      limit: 100,  // Max 100 events
-      startFromHead: false
+    const queryParams = {
+      ...params,
+      limit: params.limit ?? 100,
+      startFromHead: params.startFromHead ?? false,
     };
 
-    let response = await client.getLogEvents(params);
+    let response = await client.getLogEvents(queryParams);
 
     // For some reason, on some older streams, first query results in no events
     if (!response.events?.length && response.nextBackwardToken) {
@@ -76,10 +79,12 @@ export class CloudWatchService {
       });
     }
 
-    return response.events ?? [];
+    return response;
   }
+
+
   /**
-   * Gets a ElasticLoadBalancingV2Client and throws an Error is credentials are missing.
+   * Gets a CloudWatchLogs and throws an Error is credentials are missing.
    * @returns 
    */
   private async getClient(): Promise<CloudWatchLogs> {

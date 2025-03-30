@@ -7,14 +7,17 @@
                 <mat-icon>arrow_back</mat-icon>
             </button>
             {{ logGroupName }} 
+            <button mat-icon-button (click)="togglePause($event)" [color]="isPaused ? 'warn' : 'primary'">
+                <mat-icon>{{ isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
+            </button>
+            <div *ngIf="isPaused">
+                <a (click)="fetchLogEventsWithToken($event, true)" class="info-link">previous</a>
+                <a (click)="fetchLogEventsWithToken($event, false)" class="info-link">next</a>
+            </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
 
         <div class="log-controls">
-            <button mat-icon-button (click)="togglePause()" [color]="isPaused ? 'warn' : 'primary'">
-                <mat-icon>{{ isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
-            </button>
-
             <mat-form-field appearance="outline" class="log-filter">
                 <mat-label>Filter logs</mat-label>
                 <input matInput #logFilter [(ngModel)]="searchQuery" (keyup)="applyFilter()" placeholder="Type to filter logs">
@@ -26,6 +29,7 @@
                     <mat-option *ngFor="let stream of logStreams" [value]="stream">{{ stream }}</mat-option>
                 </mat-select>
             </mat-form-field>
+            <br>
         </div>
     </mat-expansion-panel>
 
@@ -35,7 +39,7 @@
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="timestamp">
                 <th mat-header-cell *matHeaderCellDef> Timestamp </th>
-                <td mat-cell *matCellDef="let log" class="mat-column-timestamp"> {{ log.timestamp | date:'short' }} </td>
+                <td mat-cell *matCellDef="let log" class="mat-column-timestamp"> {{ log.timestamp | date:'M/d/yy H:mm:ss' }} </td>
             </ng-container>
 
             <ng-container matColumnDef="message">
