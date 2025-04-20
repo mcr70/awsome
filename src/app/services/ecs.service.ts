@@ -45,6 +45,20 @@ export class ECSService implements OnInit {
     return response.clusterArns;
   }
 
+
+  async scaleService(cluster: string, serviceName: string, desiredCount: number) {
+    console.log(`ECSService::scaleService(${cluster}, ${serviceName}, ${desiredCount})`);
+
+    const ecs = await this.getClient()
+    const response = await ecs.updateService({
+      cluster: cluster,
+      service: serviceName,
+      desiredCount: desiredCount
+    });
+
+    return response;
+  }
+
   /**
    * Describe a cluster
    * @param clusterArn 

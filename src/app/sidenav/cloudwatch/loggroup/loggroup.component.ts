@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { OutputLogEvent, ResourceNotFoundException } from '@aws-sdk/client-cloudwatch-logs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonSidenavComponent } from '../../common.component';
 
 @Component({

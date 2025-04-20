@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 import { Service } from '@aws-sdk/client-ecs';
 
@@ -22,7 +25,8 @@ import { CommonSidenavComponent } from '../common.component';
   standalone: true,
   templateUrl: './ecs.component.html',
   styleUrls: ['./ecs.component.scss'],
-  imports: [ CommonModule, MatExpansionModule, MatTableModule ]
+  imports: [ CommonModule, MatExpansionModule, MatTableModule, MatCheckboxModule,
+    MatIconModule, MatTooltipModule, MatButtonModule ],
 })
 export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;
@@ -30,6 +34,8 @@ export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDe
   readonly panelOpenState = signal<{ [clusterArn: string]: boolean }>({});
   clusters = signal<string[] | undefined>([]);
   services = signal<{ [clusterArn: string]: Service[] }>({});
+  displayedColumns = ['select', 'serviceName', 'taskDefinition', 'tasks'];
+  selectedServices: { [cluster: string]: Set<string> } = {};
 
   constructor(private ecs: ECSService, private credentialService: CredentialService,
     private dialog: MatDialog) {
@@ -135,6 +141,74 @@ export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDe
     return cluster;  // Cluster is unique
   }
   
+
+  // -----  Service selection methods -----------------------------
+  isSelected(cluster: string, svc: any): boolean {
+    return this.selectedServices[cluster]?.has(svc.serviceName) ?? false;
+  }
+  
+  toggle(cluster: string, svc: any): void {
+    const set = this.selectedServices[cluster] ?? new Set<string>();
+    if (set.has(svc.serviceName)) {
+      set.delete(svc.serviceName);
+    } else {
+      set.add(svc.serviceName);
+    }
+    this.selectedServices[cluster] = set;
+  }
+  
+  toggleAll(cluster: string, checked: boolean): void {
+    const all = (this.services()[cluster] || [])
+      .map(s => s.serviceName)
+      .filter((name): name is string => !!name); // poistaa undefined-arvot ja tyyppivarmistaa
+    this.selectedServices[cluster] = checked ? new Set(all) : new Set();
+  }
+  
+  isAllSelected(cluster: string): boolean {
+    const all = (this.services()[cluster] || [])
+      .map(s => s.serviceName)
+      .filter((name): name is string => !!name);
+    const selected = this.selectedServices[cluster] ?? new Set();
+    return all.length > 0 && all.every(name => selected.has(name));
+  }
+  
+  isIndeterminate(cluster: string): boolean {
+    const all = (this.services()[cluster] || [])
+      .map(s => s.serviceName)
+      .filter((name): name is string => !!name);
+    const selected = this.selectedServices[cluster] ?? new Set();
+    return selected.size > 0 && selected.size < all.length;
+  }
+  // ---------------------------------------------------------------
+
+  // -----  Service scaling methods --------------------------------
+  async scaleServices(cluster: string, desiredCount: number, $event: MouseEvent) {
+    $event.stopPropagation(); // Prevent mat-expansion-panel opening
+
+    const selected = this.selectedServices[cluster];
+    let latestError: string = "";
+    const failedServices: string[] = [];
+
+    const scalePromises = Array.from(selected).map(serviceName =>
+      this.ecs.scaleService(cluster, serviceName, desiredCount)
+        .then(() => console.log(`Scaled ${serviceName} to ${desiredCount}`))
+        .catch((err: unknown) => {
+          failedServices.push(`${serviceName}`);
+          latestError = `${err}`
+        })
+    );
+  
+    await Promise.all(scalePromises);
+    
+    if (failedServices.length > 0) {
+      this.showSnackBar(`${failedServices.join('\n')}, latest error was ${latestError}`, 10000); 
+    }  
+  }
+  
+  hasSelected(cluster: string): boolean {
+    return this.selectedServices[cluster]?.size > 0;
+  }
+  // ---------------------------------------------------------------
 
   // ---------------------------------------------------------------
 
