@@ -4,7 +4,7 @@
  * 
  */
 import { Injectable, OnInit } from '@angular/core';
-import { Service, ListServicesCommandOutput, ECS } from '@aws-sdk/client-ecs';
+import { Service, ListServicesCommandOutput, ECS, UpdateServiceCommandInput } from '@aws-sdk/client-ecs';
 
 import { filter, firstValueFrom, Subject } from 'rxjs';
 
@@ -46,16 +46,18 @@ export class ECSService implements OnInit {
   }
 
 
-  async scaleService(cluster: string, serviceName: string, desiredCount: number) {
-    console.log(`ECSService::scaleService(${cluster}, ${serviceName}, ${desiredCount})`);
 
-    const ecs = await this.getClient()
+  async updateService(cluster: string, serviceName: string, options: Partial<Omit<UpdateServiceCommandInput, "cluster" | "service">> = {}) {
+    console.log(`ECSService::updateService(${cluster}, ${serviceName}, ${JSON.stringify(options)})`);
+  
+    const ecs = await this.getClient();
+  
     const response = await ecs.updateService({
-      cluster: cluster,
+      cluster,
       service: serviceName,
-      desiredCount: desiredCount
+      ...options
     });
-
+  
     return response;
   }
 

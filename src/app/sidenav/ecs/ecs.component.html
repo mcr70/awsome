@@ -64,7 +64,10 @@
                 <!-- Running / Desired Count -->
                 <ng-container matColumnDef="tasks">
                   <mat-header-cell *matHeaderCellDef> Tasks </mat-header-cell>
-                  <mat-cell *matCellDef="let svc">{{ svc.runningCount }} / {{ svc.desiredCount }}</mat-cell>
+                  <mat-cell *matCellDef="let svc">
+                    {{ svc.runningCount }} / {{ svc.desiredCount }}
+                    <mat-spinner *ngIf="svc.runningCount !== svc.desiredCount" diameter="16" class="inline-spinner"></mat-spinner>
+                  </mat-cell>
                 </ng-container>
               
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
