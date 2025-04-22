@@ -48,12 +48,26 @@ export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDe
 
   async ngOnInit() {
     this.credentialsSubscription = this.credentialService.credentials$.subscribe(async (credentials) => {
-        await this.listClusters();
+      // Clear all intervals to stop refreshing. This is an issue, if
+      // AWS credentials are changed while brwosing ECS component
+      Object.values(this.refreshIntervals).forEach(intervalId => {
+        clearInterval(intervalId);
+      });
+      this.refreshIntervals = {}; 
+      
+      await this.listClusters();
+
     });
   }
 
   ngOnDestroy(): void { // Unsubscribe to prevenet memory leaks
     this.credentialsSubscription?.unsubscribe();
+
+    // Clear all intervals to stop refreshing
+    Object.values(this.refreshIntervals).forEach(intervalId => {
+      clearInterval(intervalId);
+    });
+    this.refreshIntervals = {}; 
   }
 
   /**
