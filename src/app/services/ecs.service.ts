@@ -4,7 +4,7 @@
  * 
  */
 import { Injectable, OnInit } from '@angular/core';
-import { Service, ListServicesCommandOutput, ECS } from '@aws-sdk/client-ecs';
+import { Service, ListServicesCommandOutput, ECS, UpdateServiceCommandInput } from '@aws-sdk/client-ecs';
 
 import { filter, firstValueFrom, Subject } from 'rxjs';
 
@@ -43,6 +43,22 @@ export class ECSService implements OnInit {
     });
 
     return response.clusterArns;
+  }
+
+
+
+  async updateService(cluster: string, serviceName: string, options: Partial<Omit<UpdateServiceCommandInput, "cluster" | "service">> = {}) {
+    console.log(`ECSService::updateService(${cluster}, ${serviceName}, ${JSON.stringify(options)})`);
+  
+    const ecs = await this.getClient();
+  
+    const response = await ecs.updateService({
+      cluster,
+      service: serviceName,
+      ...options
+    });
+  
+    return response;
   }
 
   /**

@@ -4,39 +4,77 @@
     <ng-container *ngFor="let cluster of clusters(); trackBy: trackByCluster">
         <mat-expansion-panel (opened)="expansionPanelState(cluster, true)" (closed)="expansionPanelState(cluster, false)" [expanded]="false">
             <mat-expansion-panel-header>
-            <mat-panel-title> 
-                {{ cluster }} 
-                <a (click)="openClusterDetails(cluster, $event)" class="info-link">[ info ]</a>
-            </mat-panel-title>
+                <mat-panel-title class="cluster-header">
+                  {{ cluster }}
+                  <a (click)="openClusterDetails(cluster, $event)" class="info-link">[ info ]</a>
+            
+                <button mat-icon-button (click)="scaleServices(cluster, 1, $event)" [disabled]="!hasSelected(cluster)" matTooltip="Start selected">
+                  <mat-icon>play_arrow</mat-icon>
+                </button>
+                  
+                <button mat-icon-button (click)="scaleServices(cluster, 0, $event)" [disabled]="!hasSelected(cluster)" matTooltip="Stop selected">
+                  <mat-icon>stop</mat-icon>
+                </button>
+              </mat-panel-title>
+                  
             </mat-expansion-panel-header>
 
             <mat-table [dataSource]="services()[cluster]">
+
+                <!-- Select All Header Checkbox -->
+                <ng-container matColumnDef="select">
+                  <mat-header-cell *matHeaderCellDef class="checkbox-column">
+                    <mat-checkbox
+                      [checked]="isAllSelected(cluster)"
+                      [indeterminate]="isIndeterminate(cluster)"
+                      (change)="toggleAll(cluster, $event.checked)">
+                    </mat-checkbox>
+                  </mat-header-cell>
+              
+                  <!-- Row Checkbox -->
+                  <mat-cell *matCellDef="let svc" class="checkbox-column">
+                    <mat-checkbox
+                      (click)="$event.stopPropagation()"
+                      [checked]="isSelected(cluster, svc)"
+                      (change)="toggle(cluster, svc)">
+                    </mat-checkbox>
+                  </mat-cell>
+                </ng-container>
+              
                 <!-- Service Name -->
                 <ng-container matColumnDef="serviceName">
                   <mat-header-cell *matHeaderCellDef> Service Name </mat-header-cell>
                   <mat-cell *matCellDef="let svc">
-                    <a (click)="openServiceDetails(cluster, svc.serviceName, $event)" class="info-link">{{ svc.serviceName }}</a>
+                    <a (click)="openServiceDetails(cluster, svc.serviceName, $event)" class="info-link">
+                      {{ svc.serviceName }}
+                    </a>
                   </mat-cell>
                 </ng-container>
-
+              
                 <!-- Task Definition -->
                 <ng-container matColumnDef="taskDefinition">
-                    <mat-header-cell *matHeaderCellDef> Task Definition </mat-header-cell>
-                    <mat-cell *matCellDef="let svc">
-                        <a (click)="openTaskdefDetails(svc.taskDefinition, $event)" class="info-link">{{ getTaskDefinitionName(svc.taskDefinition) }}</a>
-                    </mat-cell>
+                  <mat-header-cell *matHeaderCellDef> Task Definition </mat-header-cell>
+                  <mat-cell *matCellDef="let svc">
+                    <a (click)="openTaskdefDetails(svc.taskDefinition, $event)" class="info-link">
+                      {{ getTaskDefinitionName(svc.taskDefinition) }}
+                    </a>
+                  </mat-cell>
                 </ng-container>
-
+              
                 <!-- Running / Desired Count -->
                 <ng-container matColumnDef="tasks">
-                    <mat-header-cell *matHeaderCellDef> Tasks </mat-header-cell>
-                    <mat-cell *matCellDef="let svc">{{ svc.runningCount }} / {{ svc.desiredCount }}</mat-cell>
+                  <mat-header-cell *matHeaderCellDef> Tasks </mat-header-cell>
+                  <mat-cell *matCellDef="let svc">
+                    {{ svc.runningCount }} / {{ svc.desiredCount }}
+                    <mat-spinner *ngIf="svc.runningCount !== svc.desiredCount" diameter="16" class="inline-spinner"></mat-spinner>
+                  </mat-cell>
                 </ng-container>
-
-            <mat-header-row *matHeaderRowDef="['serviceName', 'taskDefinition', 'tasks']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['serviceName', 'taskDefinition', 'tasks'];"></mat-row>
-            </mat-table>
-
+              
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+              
+              </mat-table>
+            
         </mat-expansion-panel>
     </ng-container>
 </mat-accordion>

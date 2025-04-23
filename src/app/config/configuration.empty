@@ -2,6 +2,7 @@ import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 export const awsomeConfig = {
   allowSwitchRole: true, // Allow switching roles
+  refreshPeriod: 5000    // Refreshperiod on various components in milliseconds. Not every page support refreshing.
 }
 
 
