@@ -101,6 +101,12 @@ export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDe
     try {
       const taskdef = await this.ecs.describeTaskDefinition(taskdefArn); 
 
+      const containerDefs = taskdef?.containerDefinitions;
+      if (containerDefs && containerDefs.length > 0) {
+        const logGroup = containerDefs[0].logConfiguration?.options?.["awslogs-group"];
+        //console.log(`Log group for task definition ${taskdefArn} is ${logGroup}`);
+      } 
+
       this.dialog.open(TaskdefDetailComponent, {
         width: '600px',
         data: { taskdef }
@@ -152,6 +158,8 @@ export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDe
       // Stop internval, if it is not needed anymore
       clearInterval(this.refreshIntervals[clusterArn]);
       delete this.refreshIntervals[clusterArn];
+      
+      this.selectedServices[clusterArn] = new Set(); // Deselect all services when panel is closed
     }  
   }
 

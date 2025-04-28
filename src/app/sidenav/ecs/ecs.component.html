@@ -7,14 +7,16 @@
                 <mat-panel-title class="cluster-header">
                   {{ cluster }}
                   <a (click)="openClusterDetails(cluster, $event)" class="info-link">[ info ]</a>
-            
-                <button mat-icon-button (click)="scaleServices(cluster, 1, $event)" [disabled]="!hasSelected(cluster)" matTooltip="Start selected">
-                  <mat-icon>play_arrow</mat-icon>
-                </button>
+                
+                  <ng-container *ngIf="hasSelected(cluster)">
+                    <button mat-icon-button (click)="scaleServices(cluster, 1, $event)" matTooltip="Start selected">
+                      <mat-icon>play_arrow</mat-icon>
+                    </button>
                   
-                <button mat-icon-button (click)="scaleServices(cluster, 0, $event)" [disabled]="!hasSelected(cluster)" matTooltip="Stop selected">
-                  <mat-icon>stop</mat-icon>
-                </button>
+                    <button mat-icon-button (click)="scaleServices(cluster, 0, $event)" matTooltip="Stop selected">
+                      <mat-icon>stop</mat-icon>
+                    </button>
+                  </ng-container>
               </mat-panel-title>
                   
             </mat-expansion-panel-header>
