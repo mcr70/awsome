@@ -33,6 +33,18 @@ export class RdsService {
     });
   }
 
+
+  async listDBInstances() {
+    console.log('RdsService::decribeDBInstance()');
+
+    const rds = await this.getClient();
+
+    const result =await rds.describeDBInstances();
+
+    return result.DBInstances;
+  }
+
+
   async decribeDBInstance(instanceIdentifier: string) {
     console.log('RdsService::decribeDBInstance()');
 
