@@ -5,27 +5,31 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { CommonModule } from '@angular/common';
 
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { DBInstance } from '@aws-sdk/client-rds';
 
 import { CredentialService } from '../../services/credential.service';
 import { RdsService } from '../../services/rds.service';
+import { awsomeConfig } from '../../config/configuration';
 
 @Component({
   selector: 'app-rds',
   imports: [ CommonModule, MatExpansionModule, MatTableModule, MatCheckboxModule, 
-    MatIconModule, MatButtonModule, MatTooltipModule ],
+    MatIconModule, MatButtonModule, MatTooltipModule, MatProgressSpinnerModule ],
   templateUrl: './rds.component.html',
   styleUrl: './rds.component.scss',
 })
 export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;
+  private pollingSub?: Subscription; 
+ 
   dbInstances: DBInstance[] = [];
   displayedColumns: string[] = ['select', 'name', 'class', 'engine', 'storage', 'status'];
   selectedInstances = new Set<string>();
@@ -41,6 +45,8 @@ export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDe
   }
 
   ngOnDestroy(): void {
+    this.pollingSub?.unsubscribe();
+    this.pollingSub = undefined;
     this.credentialsSubscription?.unsubscribe();
   }
 
@@ -48,9 +54,35 @@ export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDe
     console.log('RdsComponent::listRdsInstances()');
     this.rds.listDBInstances().then((instances) => {
       this.dbInstances = instances? instances : [];
+
+      if (this.hasPendingInstances()) {
+        // Start polling if there are pending instances
+        if (!this.pollingSub) {
+          this.startPolling();
+        }
+      } else {
+        // Stop polling if there are no pending instances. This implies, that user needs to
+        // refresh the page to see the changes after polling is stopped.
+        this.stopPolling()
+      }      
     }).catch((error) => {
       this.showErrorOnSnackBar(error);
     });
+  }
+
+  startPolling() {
+    this.pollingSub = interval(awsomeConfig.refreshPeriod).subscribe(() => this.listRdsInstances());
+  }
+  stopPolling() {
+    this.pollingSub?.unsubscribe();
+    this.pollingSub = undefined;
+  } 
+
+  // -----  Spinner related methods ----------------------
+  hasPendingInstances(): boolean {
+    return this.dbInstances.some(db =>
+      db.DBInstanceStatus !== 'available' && db.DBInstanceStatus !== 'stopped'
+    );
   }
 
 
@@ -60,22 +92,34 @@ export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDe
   }
   
   startSelectedInstances() {
-    this.selectedInstances.forEach(instanceId => {
-      this.rds.startDBInstance(instanceId).then(() => {
-        console.log(`Started instance: ${instanceId}`);
-      }).catch(error => {
-        this.showErrorOnSnackBar(error);
-      });
+    const startPromises = Array.from(this.selectedInstances).map(instanceId =>
+      this.rds.startDBInstance(instanceId)
+        .then(() => {
+          console.log(`Started instance: ${instanceId}`);
+        })
+        .catch(error => {
+          this.showErrorOnSnackBar(error);
+        })
+    );
+  
+    Promise.all(startPromises).then(() => {
+      this.listRdsInstances();  // Käynnistää pollingin tarvittaessa
     });
   }
   
   stopSelectedInstances() {
-    this.selectedInstances.forEach(instanceId => {
-      this.rds.stopDBInstance(instanceId).then(() => {
-        console.log(`Stopped instance: ${instanceId}`);
-      }).catch(error => {
-        this.showErrorOnSnackBar(error);
-      });
+    const stopPromises = Array.from(this.selectedInstances).map(instanceId =>
+      this.rds.stopDBInstance(instanceId)
+        .then(() => {
+          console.log(`Stopped instance: ${instanceId}`);
+        })
+        .catch(error => {
+          this.showErrorOnSnackBar(error);
+        })
+    );
+  
+    Promise.all(stopPromises).then(() => {
+      this.listRdsInstances(); 
     });
   }
 

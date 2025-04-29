@@ -68,7 +68,9 @@
     <!-- DBInstanceStatus -->
     <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-        <mat-cell *matCellDef="let db"> {{ db.DBInstanceStatus }} </mat-cell>
+        <mat-cell *matCellDef="let db"> {{ db.DBInstanceStatus }} 
+          <mat-spinner *ngIf="db.DBInstanceStatus !== 'available' && db.DBInstanceStatus !== 'stopped'" diameter="16" class="inline-spinner"></mat-spinner>
+        </mat-cell>
       </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
