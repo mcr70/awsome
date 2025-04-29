@@ -1,7 +1,46 @@
-<h3>RDS Instances</h3>
+
+<div class="rds-header">
+  <h3>RDS Instances</h3>
+
+  <div class="rds-controls">
+    <button mat-icon-button
+            matTooltip="Start selected"
+            (click)="startSelectedInstances()"
+            *ngIf="hasSelection()">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+
+    <button mat-icon-button
+            matTooltip="Stop selected"
+            (click)="stopSelectedInstances()"
+            *ngIf="hasSelection()">
+      <mat-icon>stop</mat-icon>
+    </button>
+  </div>
+</div>
 
 <mat-table [dataSource]="dbInstances" class="mat-elevation-z2" *ngIf="dbInstances?.length">
 
+    <!-- Select All Header Checkbox -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef class="checkbox-column">
+        <mat-checkbox
+          [checked]="isAllSelected()"
+          [indeterminate]="isIndeterminate()"
+          (change)="toggleAll($event.checked)">
+        </mat-checkbox>
+      </mat-header-cell>
+  
+      <!-- Row Checkbox -->
+      <mat-cell *matCellDef="let db" class="checkbox-column">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          [checked]="isSelected(db)"
+          (change)="toggle(db)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+  
     <!-- DBInstanceIdentifier -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
