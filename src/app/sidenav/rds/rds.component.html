@@ -1,28 +1,41 @@
-<mat-accordion *ngIf="dbInstances?.length">
+<h3>RDS Instances</h3>
 
-    <mat-expansion-panel *ngFor="let db of dbInstances">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ db.DBInstanceIdentifier }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ db.DBInstanceStatus }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+<mat-table [dataSource]="dbInstances" class="mat-elevation-z2" *ngIf="dbInstances?.length">
+
+    <!-- DBInstanceIdentifier -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let db"> {{ db.DBInstanceIdentifier }} </mat-cell>
+    </ng-container>
   
-      <div class="db-info">
-        <p><strong>Engine:</strong> {{ db.Engine }} ({{ db.EngineVersion }})</p>
-        <p><strong>Class:</strong> {{ db.DBInstanceClass }}</p>
-        <p><strong>Availability Zone:</strong> {{ db.AvailabilityZone }}</p>
-        <p><strong>Endpoint:</strong> {{ db.Endpoint?.Address }}:{{ db.Endpoint?.Port }}</p>
-        <p><strong>Storage (GB):</strong> {{ db.AllocatedStorage }}</p>
-        <p><strong>Multi-AZ:</strong> {{ db.MultiAZ ? 'Yes' : 'No' }}</p>
-        <p><strong>VPC:</strong> {{ db.DBSubnetGroup?.VpcId }}</p>
-        <p><strong>Created:</strong> {{ db.InstanceCreateTime | date:'medium' }}</p>
-      </div>
-    </mat-expansion-panel>
+    <!-- DBInstanceClass -->
+    <ng-container matColumnDef="class">
+      <mat-header-cell *matHeaderCellDef> Class </mat-header-cell>
+      <mat-cell *matCellDef="let db"> {{ db.DBInstanceClass }} </mat-cell>
+    </ng-container>
   
-  </mat-accordion>
+    <!-- Engine -->
+    <ng-container matColumnDef="engine">
+      <mat-header-cell *matHeaderCellDef> Engine </mat-header-cell>
+      <mat-cell *matCellDef="let db"> {{ db.Engine }} ({{ db.EngineVersion }}) </mat-cell>
+    </ng-container>
+  
+    <!-- AllocatedStorage -->
+    <ng-container matColumnDef="storage">
+      <mat-header-cell *matHeaderCellDef> Storage (GB) </mat-header-cell>
+      <mat-cell *matCellDef="let db"> {{ db.AllocatedStorage }} </mat-cell>
+    </ng-container>
+  
+    <!-- DBInstanceStatus -->
+    <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+        <mat-cell *matCellDef="let db"> {{ db.DBInstanceStatus }} </mat-cell>
+      </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  
+  </mat-table>
   
   <div *ngIf="!dbInstances?.length">
     <p>No RDS instances found.</p>
