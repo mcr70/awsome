@@ -81,5 +81,5 @@ aws cloudfront list-distributions --query "DistributionList.Items[*].Id"
 [
     "...."
 ]
-aws cloudfront create-invalidation --distribution-id .... --paths "/*"
+aws cloudfront create-invalidation --paths "/*" --distribution-id ....
 ```
