@@ -72,7 +72,6 @@ export class CloudWatchService {
 
     // For some reason, on some older streams, first query results in no events
     if (!response.events?.length && response.nextBackwardToken) {
-      console.log("CloudWatchService::getLogEvents, retrying with next token");
       response = await client.getLogEvents({
         ...params,
         nextToken: response.nextBackwardToken, // Fetch next page

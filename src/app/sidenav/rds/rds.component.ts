@@ -51,7 +51,6 @@ export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDe
   }
 
   listRdsInstances() {
-    console.log('RdsComponent::listRdsInstances()');
     this.rds.listDBInstances().then((instances) => {
       this.dbInstances = instances? instances : [];
 
@@ -94,9 +93,6 @@ export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDe
   startSelectedInstances() {
     const startPromises = Array.from(this.selectedInstances).map(instanceId =>
       this.rds.startDBInstance(instanceId)
-        .then(() => {
-          console.log(`Started instance: ${instanceId}`);
-        })
         .catch(error => {
           this.showErrorOnSnackBar(error);
         })
@@ -110,9 +106,6 @@ export class RdsComponent extends CommonSidenavComponent implements OnInit, OnDe
   stopSelectedInstances() {
     const stopPromises = Array.from(this.selectedInstances).map(instanceId =>
       this.rds.stopDBInstance(instanceId)
-        .then(() => {
-          console.log(`Stopped instance: ${instanceId}`);
-        })
         .catch(error => {
           this.showErrorOnSnackBar(error);
         })

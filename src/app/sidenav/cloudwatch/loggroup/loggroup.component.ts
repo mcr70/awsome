@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { OutputLogEvent, ResourceNotFoundException } from '@aws-sdk/client-cloudwatch-logs';
 import { CommonSidenavComponent } from '../../common.component';
+import { awsomeConfig } from '../../../config/configuration';
 
 @Component({
   selector: 'app-loggroup',
@@ -65,7 +66,7 @@ export class LogGroupComponent extends CommonSidenavComponent implements OnInit,
     this.dataSource.filterPredicate = (event: any, filter: string) =>
       event.message.toLowerCase().includes(filter.trim().toLowerCase());
 
-    this.intervalId = setInterval(() => this.fetchLogEvents(), 10_000);
+    this.intervalId = setInterval(() => this.fetchLogEvents(), awsomeConfig.refreshPeriod);
   }
 
   ngOnDestroy() {
@@ -114,7 +115,6 @@ export class LogGroupComponent extends CommonSidenavComponent implements OnInit,
       const response = await this.cloudWatch.getLogEvents(params);
       this.prevToken = response.nextBackwardToken;
       this.nextToken = response.nextForwardToken;
-      console.log(`LogGroupComponent::fetchLogEvents, got ${response.events?.length} events`);
 
       this.dataSource.data = response.events || [];
       this.applyFilter(); 
@@ -140,7 +140,6 @@ export class LogGroupComponent extends CommonSidenavComponent implements OnInit,
       const response = await this.cloudWatch.getLogEvents({logGroupName: this.logGroupName, logStreamName: this.logStreamName});
       this.prevToken = response.nextBackwardToken;
       this.nextToken = response.nextForwardToken;
-      console.log(`LogGroupComponent::fetchLogEvents, got ${response.events?.length} events`);
 
       this.dataSource.data = response.events || [];
       this.applyFilter(); 
