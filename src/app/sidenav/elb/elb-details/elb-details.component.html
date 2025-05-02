@@ -6,7 +6,7 @@
             <button mat-icon-button [routerLink]="['/elb']">
                 <mat-icon>arrow_back</mat-icon>
             </button>
-            {{ elb?.LoadBalancerName }} 
+            {{ elb?.LoadBalancerName }}
           </mat-panel-title>
         </mat-expansion-panel-header>
 
@@ -30,6 +30,19 @@
           </div>
 
     </mat-expansion-panel>
+
+    <app-metric-chart
+      *ngIf="elb?.LoadBalancerName"
+      [namespace]="'AWS/ApplicationELB'"
+      [metricName]="'RequestCount'"
+      [dimensions]="[{ 
+        Name: 'LoadBalancer', 
+        Value: arnToName(elb?.LoadBalancerArn)
+      }]"
+      [statistic]="'Sum'"
+      [period]="60"
+      [durationMinutes]="120">
+    </app-metric-chart>
 
 <br>
 
