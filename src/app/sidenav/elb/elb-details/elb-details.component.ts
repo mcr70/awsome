@@ -19,14 +19,13 @@ import { ElbService } from '../../../services/elb.service';
 import { CredentialService } from '../../../services/credential.service';
 import { SafeHtmlPipe } from './safeHtml.pipe';
 import { ListenerDetailComponent } from '../listener-detail/listener-detail.component';
-import { MetricChartComponent } from  '../../metric-chart/metric-chart.component';
+import { MonitoringComponent } from '../monitoring/monitoring.component';
 
 @Component({
   selector: 'app-elb-details',
   imports: [
     CommonModule, MatExpansionModule, MatListModule, MatIconModule, MatButtonModule, MatTableModule, RouterModule,
-    SafeHtmlPipe, MatTabsModule,
-    MetricChartComponent
+    SafeHtmlPipe, MatTabsModule
   ],
   templateUrl: './elb-details.component.html',
   styleUrl: './elb-details.component.scss'
@@ -192,6 +191,25 @@ export class ElbDetailsComponent extends CommonSidenavComponent implements OnIni
     }
   } 
   
+
+  /**
+   * A method that opens monitoring dialog
+   * @param  
+   * @param $event 
+   */
+  async openMonitoring($event: MouseEvent) {
+    $event.stopPropagation(); // Prevent mat-expansion-panel opening
+
+    try {
+      this.dialog.open(MonitoringComponent, {
+        width: '600px',
+        data: { elbName: this.arnToName(this.elb?.LoadBalancerArn) }
+      });
+    }
+    catch(error: unknown) {
+      this.showErrorOnSnackBar(error);
+    }
+  } 
   
   arnToName(arn: string | undefined): string {
     if (!arn) return '';
