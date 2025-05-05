@@ -1,5 +1,6 @@
+import { Listener, LoadBalancer, Rule, RuleCondition } from '@aws-sdk/client-elastic-load-balancing-v2';
+
 import { Component, OnInit } from '@angular/core';
-import { CommonSidenavComponent } from '../../common.component';
 import { CommonModule } from '@angular/common';
 
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -7,17 +8,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ElbService } from '../../../services/elb.service';
-import { Listener, LoadBalancer, Rule, RuleCondition } from '@aws-sdk/client-elastic-load-balancing-v2';
-import { CredentialService } from '../../../services/credential.service';
 import { Subscription } from 'rxjs';
+
+import { CommonSidenavComponent } from '../../common.component';
+import { ElbService } from '../../../services/elb.service';
+import { CredentialService } from '../../../services/credential.service';
 import { SafeHtmlPipe } from './safeHtml.pipe';
 import { ListenerDetailComponent } from '../listener-detail/listener-detail.component';
-import { MatDialog } from '@angular/material/dialog';
-
+import { MonitoringComponent } from '../monitoring/monitoring.component';
 
 @Component({
   selector: 'app-elb-details',
@@ -187,5 +189,30 @@ export class ElbDetailsComponent extends CommonSidenavComponent implements OnIni
     catch(error: unknown) {
       this.showErrorOnSnackBar(error);
     }
-  }  
+  } 
+  
+
+  /**
+   * A method that opens monitoring dialog
+   * @param  
+   * @param $event 
+   */
+  async openMonitoring($event: MouseEvent) {
+    $event.stopPropagation(); // Prevent mat-expansion-panel opening
+
+    try {
+      this.dialog.open(MonitoringComponent, {
+        width: '600px',
+        data: { elbName: this.arnToName(this.elb?.LoadBalancerArn) }
+      });
+    }
+    catch(error: unknown) {
+      this.showErrorOnSnackBar(error);
+    }
+  } 
+  
+  arnToName(arn: string | undefined): string {
+    if (!arn) return '';
+    return arn.split('loadbalancer/').pop() || '';
+  }
 }

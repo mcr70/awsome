@@ -1,0 +1,47 @@
+<mat-tab-group>
+    <mat-tab label="Request Count">
+      <app-metric-chart
+        [namespace]="'AWS/ApplicationELB'"
+        [metricName]="'RequestCount'"
+        [dimensions]="[{ Name: 'LoadBalancer', Value: data.elbName }]"
+        [statistic]="'Sum'"
+        [period]="60"
+        [durationMinutes]="120">
+      </app-metric-chart>
+    </mat-tab>
+    
+    <mat-tab label="Target Response Time">
+      <app-metric-chart
+        [namespace]="'AWS/ApplicationELB'"
+        [metricName]="'TargetResponseTime'"
+        [dimensions]="[{ Name: 'LoadBalancer', Value: data.elbName }]"
+        [statistic]="'Average'"
+        [period]="60"
+        [durationMinutes]="120">
+      </app-metric-chart>
+    </mat-tab>
+
+    <mat-tab label="HTTP 4XX">
+        <app-metric-chart
+          [namespace]="'AWS/ApplicationELB'"
+          [metricName]="'HTTPCode_ELB_4XX_Count'"
+          [dimensions]="[{ Name: 'LoadBalancer', Value: data.elbName }]"
+          [statistic]="'Sum'"
+          [period]="60"
+          [durationMinutes]="120">
+        </app-metric-chart>
+    </mat-tab>
+
+    <mat-tab label="HTTP 5XX">
+        <app-metric-chart
+          [namespace]="'AWS/ApplicationELB'"
+          [metricName]="'HTTPCode_ELB_5XX_Count'"
+          [dimensions]="[{ Name: 'LoadBalancer', Value: data.elbName }]"
+          [statistic]="'Sum'"
+          [period]="60"
+          [durationMinutes]="120">
+        </app-metric-chart>
+    </mat-tab>
+  
+  </mat-tab-group>
+  

@@ -6,7 +6,8 @@
             <button mat-icon-button [routerLink]="['/elb']">
                 <mat-icon>arrow_back</mat-icon>
             </button>
-            {{ elb?.LoadBalancerName }} 
+            {{ elb?.LoadBalancerName }}
+            <a (click)="openMonitoring($event)" class="info-link">[ metrics ]</a>
           </mat-panel-title>
         </mat-expansion-panel-header>
 
