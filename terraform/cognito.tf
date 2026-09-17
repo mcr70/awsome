@@ -167,15 +167,15 @@ resource "aws_cognito_identity_pool_roles_attachment" "awsome" {
 
 # ----  Outputs for configuration.ts  ---------------------
 output "cognito_domain" {
-  value = "https://${aws_cognito_user_pool_domain.awsome.domain}.auth.${data.aws_region.current.region}.amazoncognito.com"
+  value = "https://${aws_cognito_user_pool_domain.awsome.domain}.auth.${data.aws_region.current.name}.amazoncognito.com"
 }
 
 output "cognito_region" {
-  value = data.aws_region.current.region
+  value = data.aws_region.current.name
 }
 
 output "cognito_idp_identifier" {
-  value = "cognito-idp.${data.aws_region.current.region}.amazonaws.com/${aws_cognito_user_pool.awsome.id}"
+  value = "cognito-idp.${data.aws_region.current.name}.amazonaws.com/${aws_cognito_user_pool.awsome.id}"
 }
 
 output "cognito_user_pool_id" {
