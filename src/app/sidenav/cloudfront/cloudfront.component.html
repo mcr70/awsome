@@ -1,0 +1,24 @@
+<h3>CloudFront distributions</h3>
+
+<p *ngIf="loading">Loading distributions...</p>
+
+<table *ngIf="!loading && distributions.length > 0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Domain</th>
+      <th>Status</th>
+      <th>Enabled</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let distribution of distributions">
+      <td>{{ distribution.Id }}</td>
+      <td>{{ distribution.DomainName }}</td>
+      <td>{{ distribution.Status }}</td>
+      <td>{{ distribution.Enabled ? 'Yes' : 'No' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="!loading && distributions.length === 0">No CloudFront distributions found.</p>

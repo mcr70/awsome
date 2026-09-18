@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^21.2.23",
     "@angular/platform-browser-dynamic": "^21.2.23",
     "@angular/router": "^21.2.23",
+    "@aws-sdk/client-cloudfront": "^3.1135.0",
     "@aws-sdk/client-cloudwatch": "^3.799.0",
     "@aws-sdk/client-cloudwatch-logs": "^3.750.0",
     "@aws-sdk/client-codecommit": "^3.738.0",
