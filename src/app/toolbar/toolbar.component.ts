@@ -14,7 +14,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { AssumeRoleComponent } from './assume-role/assume-role.component';
-import { CredentialService } from '../services/credential.service';
+import { CredentialService } from '../services/aws/credential.service';
 
 import { awsomeConfig, cognitoConfig } from '../config/configuration'
 

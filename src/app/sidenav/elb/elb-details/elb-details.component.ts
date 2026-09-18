@@ -15,8 +15,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { CommonSidenavComponent } from '../../common.component';
-import { ElbService } from '../../../services/elb.service';
-import { CredentialService } from '../../../services/credential.service';
+import { ElbService } from '../../../services/aws/elb.service';
+import { CredentialService } from '../../../services/aws/credential.service';
 import { SafeHtmlPipe } from './safeHtml.pipe';
 import { ListenerDetailComponent } from '../listener-detail/listener-detail.component';
 import { MonitoringComponent } from '../monitoring/monitoring.component';

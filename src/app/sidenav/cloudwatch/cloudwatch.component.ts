@@ -11,8 +11,8 @@ import { Subscription } from 'rxjs';
 
 import { LogGroup } from '@aws-sdk/client-cloudwatch-logs';
 
-import { CloudWatchService } from '../../services/cloudwatch.service';
-import { CredentialService } from '../../services/credential.service';
+import { CloudWatchService } from '../../services/aws/cloudwatch.service';
+import { CredentialService } from '../../services/aws/credential.service';
 import { CommonSidenavComponent } from '../common.component';
 
 @Component({

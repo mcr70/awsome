@@ -8,8 +8,8 @@ import { Subscription } from 'rxjs';
 
 import { LoadBalancer } from '@aws-sdk/client-elastic-load-balancing-v2';
 
-import { ElbService } from '../../services/elb.service';
-import { CredentialService } from '../../services/credential.service';
+import { ElbService } from '../../services/aws/elb.service';
+import { CredentialService } from '../../services/aws/credential.service';
 import { CommonSidenavComponent } from '../common.component';
 
 @Component({

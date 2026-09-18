@@ -11,8 +11,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { Service } from '@aws-sdk/client-ecs';
 
-import { ECSService } from '../../services/ecs.service';
-import { CredentialService } from '../../services/credential.service';
+import { ECSService } from '../../services/aws/ecs.service';
+import { CredentialService } from '../../services/aws/credential.service';
 
 import { ClusterDetailComponent } from './cluster-detail/cluster-detail.component';
 import { TaskdefDetailComponent } from './tastdef-detail/tastdef-detail.component'

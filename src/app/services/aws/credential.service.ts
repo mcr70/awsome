@@ -6,7 +6,7 @@ import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 
-import { cognitoConfig } from '../config/configuration';
+import { cognitoConfig } from '../../config/configuration';
 
 export interface CredentialModel {
   AccessKeyId: string;

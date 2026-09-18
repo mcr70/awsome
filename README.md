@@ -53,8 +53,8 @@ and fill in `cognitoConfig` const.
 The Terraform configuration creates the user pool and groups, but it does not
 create individual users. Create a user in the AWS Console:
 
-1. Open **Amazon Cognito** in the `eu-west-1` region.
-2. Open the user pool named `awsome`.
+1. Open **Amazon Cognito**
+2. Open the user pool named `awsome-ui`.
 3. Open **Users** and choose **Create user**.
 4. Enter the user's email address as the username and email address.
 5. Set a temporary password, or let Cognito generate one.

@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog'; // Tämä korjaa virheen!
 import { ReactiveFormsModule } from '@angular/forms'; 
-import { CredentialService } from '../../services/credential.service';
+import { CredentialService } from '../../services/aws/credential.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

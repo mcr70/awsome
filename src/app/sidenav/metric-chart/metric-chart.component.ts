@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LegendPosition } from '@swimlane/ngx-charts';
 
-import { CloudWatchService } from '../../services/cloudwatch.service';
+import { CloudWatchService } from '../../services/aws/cloudwatch.service';
 
 @Component({
   selector: 'app-metric-chart',

@@ -3,7 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { CloudWatchService } from '../../../services/cloudwatch.service';
+import { CloudWatchService } from '../../../services/aws/cloudwatch.service';
 import { MetricChartComponent } from "../../metric-chart/metric-chart.component";
 
 @Component({

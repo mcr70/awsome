@@ -8,7 +8,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 import { SidenavComponent } from "./sidenav/sidenav.component";
 import { ToolbarComponent } from "./toolbar/toolbar.component";
-import { CredentialService } from "./services/credential.service";
+import { CredentialService } from "./services/aws/credential.service";
 import { NotLoggedInComponent } from "./not-logged-in/not-logged-in.component";
 
 import { cognitoConfig } from './config/configuration';

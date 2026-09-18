@@ -15,8 +15,8 @@ import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { DBInstance } from '@aws-sdk/client-rds';
 
-import { CredentialService } from '../../services/credential.service';
-import { RdsService } from '../../services/rds.service';
+import { CredentialService } from '../../services/aws/credential.service';
+import { RdsService } from '../../services/aws/rds.service';
 import { awsomeConfig } from '../../config/configuration';
 
 @Component({

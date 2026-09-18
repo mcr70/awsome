@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';  
 
-import { CodecommitService } from '../../services/codecommit.service';
-import { CredentialService } from '../../services/credential.service';
+import { CodecommitService } from '../../services/aws/codecommit.service';
+import { CredentialService } from '../../services/aws/credential.service';
 import { Subscription } from 'rxjs';
 import { CommonSidenavComponent } from '../common.component';
 
