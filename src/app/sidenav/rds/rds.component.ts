@@ -10,7 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 
-import { CommonModule } from '@angular/common';
+
 
 import { interval, Subscription } from 'rxjs';
 import { DBInstance } from '@aws-sdk/client-rds';
@@ -21,8 +21,7 @@ import { awsomeConfig } from '../../config/configuration';
 
 @Component({
   selector: 'app-rds',
-  imports: [ CommonModule, MatExpansionModule, MatTableModule, MatCheckboxModule, 
-    MatIconModule, MatButtonModule, MatTooltipModule, MatProgressSpinnerModule ],
+  imports: [MatExpansionModule, MatTableModule, MatCheckboxModule, MatIconModule, MatButtonModule, MatTooltipModule, MatProgressSpinnerModule],
   templateUrl: './rds.component.html',
   styleUrl: './rds.component.scss',
 })

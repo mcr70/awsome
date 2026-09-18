@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { CommonSidenavComponent } from '../common.component';
 
 @Component({
   selector: 'app-cloudfront',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './cloudfront.component.html',
   styleUrl: './cloudfront.component.scss'
 })

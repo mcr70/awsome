@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common'; // Varmista, että CommonModule tuodaan
+ // Varmista, että CommonModule tuodaan
 import { Component, Input, OnInit } from '@angular/core';
 import { cognitoConfig } from '../config/configuration';
 @Component({
   selector: 'app-not-logged-in',
-  imports: [ CommonModule ],
+  imports: [],
   templateUrl: './not-logged-in.component.html',
   styleUrls: ['./not-logged-in.component.scss']
 })

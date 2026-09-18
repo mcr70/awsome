@@ -1,7 +1,7 @@
 import { CognitoIdentityClient, GetCredentialsForIdentityCommand, GetIdCommand } from "@aws-sdk/client-cognito-identity";
 
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import { OidcSecurityService } from 'angular-auth-oidc-client';
@@ -17,8 +17,8 @@ import { cognitoConfig } from './config/configuration';
 @Component({
   selector: 'app-root',
   imports: [
-    ToolbarComponent, 
-    CommonModule, HttpClientModule,
+    ToolbarComponent,
+    HttpClientModule,
     SidenavComponent,
     NotLoggedInComponent
 ],

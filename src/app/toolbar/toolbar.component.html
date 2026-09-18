@@ -1,39 +1,49 @@
 <mat-toolbar>
-    <mat-toolbar-row>
-        <img src="awsome2.png" alt="Icon" width="48" (click)="navigateHome()" [style.cursor]="isAuthenticated ? 'pointer' : 'default'">
+  <mat-toolbar-row>
+    <img src="awsome2.png" alt="Icon" width="48" (click)="navigateHome()" [style.cursor]="isAuthenticated ? 'pointer' : 'default'">
 
-        <div style="margin-left: 20px">{{ selectedAccount }}</div>
-        <span class="spacer"></span> <!-- empty space -->
-        
-        <button mat-button *ngIf="!isAuthenticated" (click)="login()">Login</button>
-        <button mat-button *ngIf="isAuthenticated" [matMenuTriggerFor]="accnt_menu">{{ email }}</button>
+    <div style="margin-left: 20px">{{ selectedAccount }}</div>
+    <span class="spacer"></span> <!-- empty space -->
 
-        <mat-menu #accnt_menu="matMenu" xPosition="before">
-            <button mat-menu-item (click)="openPreferences()">Preferences</button>
-            <mat-divider></mat-divider>
-            <button mat-menu-item *ngIf="switchRoleEnabled" [matMenuTriggerFor]="assumeRoles">Switch role</button>
+    @if (!isAuthenticated) {
+      <button mat-button (click)="login()">Login</button>
+    }
+    @if (isAuthenticated) {
+      <button mat-button [matMenuTriggerFor]="accnt_menu">{{ email }}</button>
+    }
 
-            <mat-divider *ngIf="switchRoleEnabled" style="margin-left: 5px; margin-right: 5px;"/>
+    <mat-menu #accnt_menu="matMenu" xPosition="before">
+      <button mat-menu-item (click)="openPreferences()">Preferences</button>
+      <mat-divider></mat-divider>
+      @if (switchRoleEnabled) {
+        <button mat-menu-item [matMenuTriggerFor]="assumeRoles">Switch role</button>
+      }
 
-            <button mat-menu-item (click)="logout()">Logout</button>
-        </mat-menu>
+      @if (switchRoleEnabled) {
+        <mat-divider style="margin-left: 5px; margin-right: 5px;"/>
+      }
+
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
 
 
-        <mat-menu #assumeRoles="matMenu">
-            <button mat-menu-item (click)="openAssumeRoleDialog()">New...</button>
-            <button mat-menu-item (click)="switchBack()">Switch back</button>
+    <mat-menu #assumeRoles="matMenu">
+      <button mat-menu-item (click)="openAssumeRoleDialog()">New...</button>
+      <button mat-menu-item (click)="switchBack()">Switch back</button>
 
-            <mat-divider style="margin-left: 5px; margin-right: 5px;"/>
+      <mat-divider style="margin-left: 5px; margin-right: 5px;"/>
 
-            <button mat-menu-item *ngFor="let account of savedAccounts" (click)="assumeRole(account.name, account.accountId, account.role, account.region)">
-                <div class="menu-item-container">
-                    <span>{{ account.name }}</span>
-                    <button mat-icon-button (click)="removeSavedAccount(account.accountId); $event.stopPropagation();">
-                        <mat-icon style="font-size: 10px">close</mat-icon>
-                    </button>
-                </div>
+      @for (account of savedAccounts; track account) {
+        <button mat-menu-item (click)="assumeRole(account.name, account.accountId, account.role, account.region)">
+          <div class="menu-item-container">
+            <span>{{ account.name }}</span>
+            <button mat-icon-button (click)="removeSavedAccount(account.accountId); $event.stopPropagation();">
+              <mat-icon style="font-size: 10px">close</mat-icon>
             </button>
-        </mat-menu>
+          </div>
+        </button>
+      }
+    </mat-menu>
 
-    </mat-toolbar-row>
+  </mat-toolbar-row>
 </mat-toolbar>

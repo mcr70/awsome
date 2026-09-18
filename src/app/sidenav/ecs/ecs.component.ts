@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -27,8 +27,7 @@ import { awsomeConfig } from '../../config/configuration';
   standalone: true,
   templateUrl: './ecs.component.html',
   styleUrls: ['./ecs.component.scss'],
-  imports: [ CommonModule, MatExpansionModule, MatTableModule, MatCheckboxModule,
-    MatIconModule, MatTooltipModule, MatButtonModule, MatProgressSpinnerModule ],
+  imports: [MatExpansionModule, MatTableModule, MatCheckboxModule, MatIconModule, MatTooltipModule, MatButtonModule, MatProgressSpinnerModule],
 })
 export class EcsComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;

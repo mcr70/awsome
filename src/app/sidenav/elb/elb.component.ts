@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { CommonSidenavComponent } from '../common.component';
 
 @Component({
   selector: 'app-elb',
-  imports: [ MatTableModule, CommonModule, RouterModule ],
+  imports: [MatTableModule, RouterModule],
   templateUrl: './elb.component.html',
   styleUrl: './elb.component.scss'
 })

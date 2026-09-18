@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';  
 
@@ -14,9 +14,8 @@ import { CommonSidenavComponent } from '../common.component';
   templateUrl: './codecommit.component.html',
   styleUrl: './codecommit.component.scss',
   imports: [
-    CommonModule, 
     MatTableModule
-  ], 
+], 
 })
 export class CodecommitComponent extends CommonSidenavComponent implements OnInit, OnDestroy {
   private credentialsSubscription?: Subscription;

@@ -1,7 +1,7 @@
 import { Listener, LoadBalancer, Rule, RuleCondition } from '@aws-sdk/client-elastic-load-balancing-v2';
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,9 +24,15 @@ import { MonitoringComponent } from '../monitoring/monitoring.component';
 @Component({
   selector: 'app-elb-details',
   imports: [
-    CommonModule, MatExpansionModule, MatListModule, MatIconModule, MatButtonModule, MatTableModule, RouterModule,
-    SafeHtmlPipe, MatTabsModule
-  ],
+    MatExpansionModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    RouterModule,
+    SafeHtmlPipe,
+    MatTabsModule
+],
   templateUrl: './elb-details.component.html',
   styleUrl: './elb-details.component.scss'
 })

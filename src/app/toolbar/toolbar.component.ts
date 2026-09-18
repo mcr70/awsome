@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { Router } from '@angular/router';  // Lisää tämä import
 
@@ -22,10 +22,11 @@ import { awsomeConfig, cognitoConfig } from '../config/configuration'
   selector: 'app-toolbar',
   imports: [
     MatToolbarModule,
-    MatMenuModule, MatButtonModule,
-    CommonModule, MatDividerModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatDividerModule,
     MatIconModule
-  ],
+],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.scss',
   providers: [CookieService]

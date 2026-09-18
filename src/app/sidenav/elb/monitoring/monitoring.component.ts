@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -8,7 +8,7 @@ import { MetricChartComponent } from "../../metric-chart/metric-chart.component"
 
 @Component({
   selector: 'app-monitoring',
-  imports: [MetricChartComponent, CommonModule, MatTabsModule],
+  imports: [MetricChartComponent, MatTabsModule],
   templateUrl: './monitoring.component.html',
   styleUrl: './monitoring.component.scss'
 })

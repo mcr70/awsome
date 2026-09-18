@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { PreferencesService, SidebarPreference } from '../services/preferences.s
 @Component({
   selector: 'app-preferences',
   standalone: true,
-  imports: [CommonModule, DragDropModule, MatButtonModule, MatCheckboxModule, MatIconModule],
+  imports: [DragDropModule, MatButtonModule, MatCheckboxModule, MatIconModule],
   templateUrl: './preferences.component.html',
   styleUrl: './preferences.component.scss'
 })

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { NgIf } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,9 +16,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './assume-role.component.html',
   styleUrls: ['./assume-role.component.scss'],
   imports: [
-    MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule,
-    NgIf, ReactiveFormsModule
-  ]
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+    ReactiveFormsModule
+]
 })
 export class AssumeRoleComponent {
   private _snackBar = inject(MatSnackBar);

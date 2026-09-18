@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -8,7 +8,7 @@ import { ElbService } from '../../../services/aws/elb.service';
 
 @Component({
   selector: 'app-listener-detail',
-  imports: [ CommonModule, MatDialogModule ],
+  imports: [MatDialogModule],
   templateUrl: './listener-detail.component.html',
   styleUrl: './listener-detail.component.scss'
 })

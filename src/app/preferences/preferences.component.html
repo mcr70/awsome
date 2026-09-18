@@ -15,14 +15,16 @@
     </div>
 
     <div class="sidebar-list" cdkDropList (cdkDropListDropped)="drop($event)">
-      <div class="sidebar-item" *ngFor="let item of preferences" cdkDrag>
-        <mat-icon cdkDragHandle aria-hidden="true">drag_indicator</mat-icon>
-        <mat-checkbox
-          [checked]="item.visible"
-          (change)="onVisibilityChange(item, $event.checked)">
-          {{ item.label }}
-        </mat-checkbox>
-      </div>
+      @for (item of preferences; track item) {
+        <div class="sidebar-item" cdkDrag>
+          <mat-icon cdkDragHandle aria-hidden="true">drag_indicator</mat-icon>
+          <mat-checkbox
+            [checked]="item.visible"
+            (change)="onVisibilityChange(item, $event.checked)">
+            {{ item.label }}
+          </mat-checkbox>
+        </div>
+      }
     </div>
   </section>
 </section>
