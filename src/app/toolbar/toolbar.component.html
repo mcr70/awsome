@@ -9,6 +9,8 @@
         <button mat-button *ngIf="isAuthenticated" [matMenuTriggerFor]="accnt_menu">{{ email }}</button>
 
         <mat-menu #accnt_menu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="openPreferences()">Preferences</button>
+            <mat-divider></mat-divider>
             <button mat-menu-item *ngIf="switchRoleEnabled" [matMenuTriggerFor]="assumeRoles">Switch role</button>
 
             <mat-divider *ngIf="switchRoleEnabled" style="margin-left: 5px; margin-right: 5px;"/>

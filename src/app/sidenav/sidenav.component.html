@@ -7,13 +7,9 @@
       </button>
 
       <mat-nav-list>
-        <a mat-list-item routerLink="/codecommit" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">CodeCommit</a>
-        <a mat-list-item routerLink="/cloudwatch" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">CloudWatch</a>
-        <a mat-list-item routerLink="/cloudfront" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">CloudFront</a>
-        <a mat-list-item routerLink="/ecs" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">ECS</a>
-        <a mat-list-item routerLink="/elb" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">ELB</a>
-        <a mat-list-item routerLink="/rds" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">RDS</a>
-        <a mat-list-item routerLink="/billing" routerLinkActive="active-link" *ngIf="isAuthenticated" [routerLinkActiveOptions]="{ exact: true }">Billing</a>
+        <ng-container *ngFor="let item of preferences">
+          <a mat-list-item [routerLink]="item.route" routerLinkActive="active-link" *ngIf="isAuthenticated && item.visible" [routerLinkActiveOptions]="{ exact: true }">{{ item.label }}</a>
+        </ng-container>
       </mat-nav-list>
     </ng-container>
 

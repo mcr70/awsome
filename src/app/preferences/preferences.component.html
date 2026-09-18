@@ -1,0 +1,28 @@
+<section class="preferences-page">
+  <header>
+    <p class="eyebrow">Personal settings</p>
+    <h2>Preferences</h2>
+    <p class="muted">Choose which AWS services appear in the sidebar and arrange their order.</p>
+  </header>
+
+  <section class="preferences-panel">
+    <div class="panel-heading">
+      <div>
+        <h3>Sidebar</h3>
+        <p class="muted">Drag items to reorder them.</p>
+      </div>
+      <button mat-stroked-button type="button" (click)="reset()">Reset</button>
+    </div>
+
+    <div class="sidebar-list" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div class="sidebar-item" *ngFor="let item of preferences" cdkDrag>
+        <mat-icon cdkDragHandle aria-hidden="true">drag_indicator</mat-icon>
+        <mat-checkbox
+          [checked]="item.visible"
+          (change)="onVisibilityChange(item, $event.checked)">
+          {{ item.label }}
+        </mat-checkbox>
+      </div>
+    </div>
+  </section>
+</section>

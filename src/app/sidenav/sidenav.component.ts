@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 
 import { RouterOutlet } from '@angular/router';
 import { SidenavRoutingModule } from './sitenav-routing.module';
+import { PreferencesService, SidebarPreference } from '../services/preferences.service';
 
 /** @title Sidenav with configurable mode */
 @Component({
@@ -27,6 +28,14 @@ import { SidenavRoutingModule } from './sitenav-routing.module';
 export class SidenavComponent {
   @Input() isAuthenticated: boolean = false;
   isCollapsed = false;
+  preferences: SidebarPreference[] = [];
+
+  constructor(private preferencesService: PreferencesService) {
+    this.preferences = preferencesService.preferences;
+    this.preferencesService.preferences$.subscribe((preferences) => {
+      this.preferences = preferences;
+    });
+  }
 
   expandSidenav(): void {
     this.isCollapsed = false;

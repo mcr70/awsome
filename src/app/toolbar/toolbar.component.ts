@@ -74,6 +74,10 @@ export class ToolbarComponent {
     this.router.navigate(['/']);
   }  
 
+  openPreferences(): void {
+    this.router.navigate(['/preferences']);
+  }
+
   login() {
     console.log('ToolbarComponent::login()');
     this.oidcService.authorize();
