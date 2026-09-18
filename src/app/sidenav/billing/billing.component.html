@@ -1,0 +1,100 @@
+<section class="billing-page">
+  <header class="billing-header">
+    <div>
+      <p class="eyebrow">AWS Cost Explorer</p>
+      <h2>Billing</h2>
+      <p class="muted">Monthly account costs for the active AWS role.</p>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Billing month</mat-label>
+      <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onMonthChange()">
+        <mat-option *ngFor="let month of months" [value]="month">{{ month }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </header>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="loading" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <section class="summary-grid">
+      <div class="summary-item">
+        <span class="muted">Selected month</span>
+        <strong>{{ selectedMonth }}</strong>
+      </div>
+      <div class="summary-item">
+        <span class="muted">Total cost</span>
+        <strong>{{ totalCost | number:'1.2-2' }} USD</strong>
+      </div>
+      <div class="summary-item">
+        <span class="muted">Services with spend</span>
+        <strong>{{ billingRows.length }}</strong>
+      </div>
+    </section>
+
+    <section class="billing-grid">
+      <div class="panel">
+        <h3>Cost by service</h3>
+        <table mat-table [dataSource]="billingRows" *ngIf="billingRows.length > 0">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Service</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef>Cost</th>
+            <td mat-cell *matCellDef="let row">{{ row.cost | number:'1.2-2' }} USD</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectService(row)"
+              [class.selected]="selectedService === row.name"></tr>
+        </table>
+        <p class="muted empty" *ngIf="billingRows.length === 0">No billing data for this period.</p>
+      </div>
+
+      <div class="panel details-panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Service details</h3>
+            <p class="muted">{{ selectedService || 'Select a service to inspect usage.' }}</p>
+          </div>
+          <button *ngIf="selectedService" type="button" (click)="clearSelection()">Clear</button>
+        </div>
+
+        <div class="loading" *ngIf="loadingDetails"><mat-spinner diameter="32"></mat-spinner></div>
+        <table mat-table [dataSource]="usageRows" *ngIf="!loadingDetails && usageRows.length > 0">
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Usage type</th>
+            <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef>Cost</th>
+            <td mat-cell *matCellDef="let row">{{ row.cost | number:'1.2-2' }} USD</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="detailColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: detailColumns"></tr>
+        </table>
+        <p class="muted empty" *ngIf="!loadingDetails && selectedService && usageRows.length === 0">No usage breakdown available.</p>
+      </div>
+    </section>
+
+    <section class="panel chart-panel">
+      <h3>Account cost trend</h3>
+      <div class="chart" *ngIf="accountTrend.length > 0">
+        <ngx-charts-bar-vertical [results]="accountTrend" [scheme]="'cool'" [xAxis]="true" [yAxis]="true" [animations]="true"></ngx-charts-bar-vertical>
+      </div>
+      <p class="muted empty" *ngIf="accountTrend.length === 0">No trend data available.</p>
+    </section>
+
+    <section class="panel chart-panel" *ngIf="selectedService">
+      <h3>{{ selectedService }} trend</h3>
+      <div class="loading" *ngIf="loadingTrend"><mat-spinner diameter="32"></mat-spinner></div>
+      <div class="chart" *ngIf="!loadingTrend && serviceTrend.length > 0">
+        <ngx-charts-bar-vertical [results]="serviceTrend" [scheme]="'vivid'" [xAxis]="true" [yAxis]="true" [animations]="true"></ngx-charts-bar-vertical>
+      </div>
+    </section>
+  </ng-container>
+</section>

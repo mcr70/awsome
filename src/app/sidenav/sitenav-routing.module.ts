@@ -12,6 +12,7 @@ import { ElbComponent } from './elb/elb.component';
 import { LogGroupComponent } from './cloudwatch/loggroup/loggroup.component';
 import { ElbDetailsComponent } from './elb/elb-details/elb-details.component';
 import { RdsComponent } from './rds/rds.component';
+import { BillingComponent } from './billing/billing.component';
 
 
 export const routes: Routes = [
@@ -23,7 +24,8 @@ export const routes: Routes = [
     { path: 'ecs', component: EcsComponent, canActivate: [authGuard] },
     { path: 'elb', component: ElbComponent, canActivate: [authGuard] },
     { path: 'elb/:id', component: ElbDetailsComponent, canActivate: [authGuard] },
-    { path: 'rds', component: RdsComponent, canActivate: [authGuard] }
+    { path: 'rds', component: RdsComponent, canActivate: [authGuard] },
+    { path: 'billing', component: BillingComponent, canActivate: [authGuard] }
   ];
   
 @NgModule({
