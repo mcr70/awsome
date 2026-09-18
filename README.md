@@ -7,8 +7,9 @@ an User interface that displays just the essentials of your workload.
 Idea is not to replace existing AWS UI. This is important to note. For one thing,
 it would be a huge tasks to do so.
 
-To get started with this project, you need to create AWS Cognito User pool 
-and Cognito Identity pool. This is not covered in here at this time.
+To get started with this project, create the infrastructure in the `terraform/`
+directory first. This creates the Cognito User Pool, Cognito Identity Pool,
+the hosted login domain, and the `ReadOnly` and `Admins` groups.
 
 Initial login, will be done against the AWS account where Cognito is installed.
 To use "switch role" feature, target account needs to have a 
@@ -47,6 +48,32 @@ Before starting the development server, you need to configure Cognito to be used
 Copy `src/app/config/configuration.empty` to `src/app/config/configuration.ts`,
 and fill in `cognitoConfig` const.
 
+### Create a Cognito user
+
+The Terraform configuration creates the user pool and groups, but it does not
+create individual users. Create a user in the AWS Console:
+
+1. Open **Amazon Cognito** in the `eu-west-1` region.
+2. Open the user pool named `awsome`.
+3. Open **Users** and choose **Create user**.
+4. Enter the user's email address as the username and email address.
+5. Set a temporary password, or let Cognito generate one.
+6. Create the user.
+7. Open the new user, choose **Add user to group**, select `ReadOnly`, and save.
+
+The user must belong to the `ReadOnly` group before logging in. The group is
+created by Terraform and is linked to the AWS managed `ReadOnlyAccess` policy
+through the `awsome-readonly` IAM role. Do not attach IAM policies directly to
+the Cognito user.
+
+On the first login, Cognito may require the user to change the temporary
+password. After the password change, the application should receive temporary
+AWS credentials with read-only permissions.
+
+The `Admins` group is also created by Terraform, but it grants
+`PowerUserAccess`. Do not add normal users to that group. Replace that policy
+with a narrower custom policy before using it for real administrators.
+
 To start a local development server, run:
 
 ```bash
@@ -69,7 +96,7 @@ terraform apply
 Once the bucket and CloudFront distribution is created, build and copy the files into bucket
 ```bash
 ng build --configuration=production
-aws s3 sync ./dist/awsome/browser s3://my-awsome-ui --delete
+aws s3 sync ./dist/awsome/browser s3://156779480692-awsome-ui --delete
 ```
 
 If you need to update the service to S3 bucket, remember that there may be some caching 
